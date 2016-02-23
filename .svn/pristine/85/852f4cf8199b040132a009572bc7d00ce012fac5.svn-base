@@ -1,0 +1,19 @@
+<?php echo $this->fetch('content'); ?>
+<div id="controlPanel">
+	<button id="pause" value="pause" onclick="pauseAnimation()">Pause</button>
+	<button id="grid" onclick="gridOff()">Grid</button>
+</div>
+<div id="wrapper">
+	<div id="wrapperMsg">
+		<p id="msg"><?=__('clickToStart')?></p>
+		<button id="btn-nextStep" value="nextStep" class="btn btn-success"
+			onclick="animator.nextStep()"><?=__('btnContinue')?></button>
+	</div>
+	<div id="htmlContent"></div>
+	<canvas id="myCanvas" width="1152" height="768">
+			Seu suporte para canvas ta bixado
+		</canvas>
+	<canvas id="myCanvas2" width="1152" height="768">
+			Seu suporte para canvas ta bixado
+	</canvas>
+</div>

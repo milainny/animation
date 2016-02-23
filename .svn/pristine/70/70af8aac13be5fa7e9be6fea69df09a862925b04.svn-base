@@ -1,0 +1,6 @@
+<?php
+$this->extend('/Pages/animation');
+
+$this->Html->script('animations/dns/msg', array('block' => 'scriptMessage'));
+$this->Html->script('animations/dns/main', array('block' => 'scriptAnimation'));
+

@@ -1,0 +1,114 @@
+#APP CONF
+msgid 	"animations"
+msgid 	"about"
+msgid 	"contact"
+
+msgid 	"textExplain"
+msgstr 	"Here you will find some animations that simulate complex and difficult process about the discipline of Computer Network. These animations were developed in order to facilitate students' understanding and stimulate student interest in the discipline."
+
+msgid 	"appTitle"
+msgstr 	"Learning Object Repository"
+
+msgid 	"appSubtitle"
+msgstr 	"Discipline: Computer Networking"
+
+msgid	"clickToStart"
+msgStr	"Click in 'Continue' to start the animation"
+
+msgid	"btnContinue"
+msgstr	"Continue"
+
+msgid "contactTitle"
+msgstr "Contact"
+
+msgid "textContactExplain"
+msgstr "All data should be filled"
+
+msgid "name"
+msgstr "Name"
+
+msgid "reason"
+msgstr "Reason"
+
+msgid "message"
+msgstr "Message"
+
+msgid "aboutTitle"
+msgstr "About the repository"
+
+msgid "aboutDescription"
+msgstr "This repository was built with the purpose of providing the animations in the public domain. You can contribute with suggestions, corrections, and ideas for new animations via the contact page."
+
+msgid  "ownerDescription"
+msgstr "Founder and owner of the project"
+
+msgid "member1Description"
+msgstr "Collaborated with repository creation and animation: Domain Name System, Hierarchical Routing and Subnets"
+
+msgid "member2Description"
+msgstr "Collaborated with the animations: The Hybrid Model, the process of three-way TCP handshake, the Pure Aloha Protocol, the Protocol Ethernet, TCP - sequence number and acknowledgment"
+
+#BUSINESS MESSAGES
+msgid "email-empty-fields"
+msgstr "There are blank fields" 
+
+msgid "email-success"
+msgstr "Email sent successfully!"
+
+msgid "email-error"
+msgstr "An error occurred while sending the email"
+
+msgid "doubt"
+msgid "suggestion"
+msgid "error"
+
+
+#ANIMATIONS
+msgid	"animationDNSTitle"
+msgstr	"Domain Name System"
+
+msgid 	"animationDNSText"
+msgstr	"The Internet Name Service used to perform IP address translation."
+
+msgid	"animationSubnetsTitle"
+msgstr	"Subnets"
+
+msgid	"animationSubnetsText"
+msgstr	"The importance of using the network mask for creating logical subnets."
+
+msgid	"animationHierarchicalRoutingTitle"
+msgstr	"Hierarchical Routing"
+
+msgid	"animationHierarchicalRoutingText"
+msgstr	"Intra and inter-AS routing in the internet with RIP and BGP."
+
+msgid	"animationHybridModelTitle"
+msgstr 	"The Hybrid Model"
+
+msgid	"animationHybridModelText"
+msgstr 	"Process of encapsulation and decapsulation performed while sending a message."
+
+msgid	"animationThreeWayHandshakeTittle"
+msgstr	"Three-way Handshake"
+
+msgid	"animationThreeWayHandshakeText"
+msgstr 	"Process of TCP connection establishment."
+	
+msgid	"animationAlohaTitle"
+msgstr	"Aloha Protocol"
+
+msgid	"animationAlohaText"
+msgstr	"Resolving allocation channels at the union layer"
+
+msgid	"animationEthernetTitle"
+msgstr	"Ethernet Protocol"
+
+msgid	"animationEthernetText"
+msgstr	"Operation of the protocol that is unanimity in the market for wired LANs."
+
+msgid	"animationSequenceNumberTitle"
+msgstr	"Sequence number and acknowledgment"
+
+msgid	"animationSequenceNumberText"
+msgstr	"Two of the most important fields of the TCP header."
+

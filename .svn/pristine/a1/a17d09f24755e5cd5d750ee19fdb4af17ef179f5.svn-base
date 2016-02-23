@@ -1,0 +1,223 @@
+/*BOOTSTRAP*/
+h1, h2, h3, h4, h5, h6 {
+	margin: 5px 0;
+}
+
+html{
+/* 	background: -webkit-linear-gradient(0deg, rgb(106, 51, 145), rgb(147, 54, 132)); */
+/* 	background: #f2f2f2; */
+}
+
+.nav a {
+	text-transform: capitalize;
+}
+
+#languages {
+	margin-top: 8px;
+}
+
+.table {
+	background: #fff;
+}
+
+.table td, th {
+	border: solid 1px #f2f2f2;
+	border-top: none;
+}
+
+
+/*SITE GERAL*/
+body {
+  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.box {
+	background: #f2f2f2;
+	color: #666;
+	padding: 10px 20px;
+	min-height: 130px;
+}
+
+.box:hover {
+/* 	background: #e1e1e1;	 */
+}
+
+.box h3 {
+	line-height: 30px;
+}
+
+.box h4 {
+	line-height: 29px;
+	font-size:22px;
+}
+
+.subtitle {
+	font-size:17px;
+}
+
+.mbottom {
+	margin-bottom:18px;
+}
+
+
+/*END*/
+
+#wrapper h1, #wrapper h2, #wrapper h3, #wrapper h4, #wrapper h5 {
+	text-align: center;
+}
+
+.bg-blue {
+	background:	#01B0EC;
+	color: #fff;
+	padding: 10px 15px;
+	line-height: 25px;
+}
+
+.blue {
+	color: #01B0EC;
+}
+
+.green {
+	color: #4fbe4f;
+}
+
+#btn-restart {
+	margin-top: 20px;
+}
+
+#wrapper ol li {
+	line-height: 30px;
+}
+
+#controlPanel {
+	display: none;
+}
+
+canvas {
+	position: absolute;
+	margin: auto;
+	background: transparent;
+	border:solid 1px #E1E1E1;
+}
+
+#wrapper{ 
+	margin:100px auto;
+	width: 1152px;
+	height: 768px;
+}
+
+#wrapper p {
+	text-align: center;
+	font-size: 18px;
+}
+
+#myCanvas {
+	z-index: 0;
+}
+
+#myCanvas2 {
+	z-index: 1;
+}
+
+#btn-nextStep {
+    margin: 0px 0px 15px 15px;
+}
+
+.grid {
+	background: url("../img/layout_grid.gif");
+}
+
+#wrapperMsg {
+	background: #f9f9f9;
+	border:solid 1px #E1E1E1;
+	width:650px;
+	min-height: 160px;
+	position: absolute;
+	margin-left: 251px;
+	z-index: 23;
+	margin-top: -80px;
+	overflow-y: auto;
+}
+
+#wrapperMsg p {
+	margin:0px;
+	padding:15px;
+	text-align: justify;
+
+	line-height: 26px;
+}
+
+#htmlContent {
+	position: absolute;
+	margin-top: 130px;
+	margin-left: 50px;
+	z-index: 10;
+	opacity: 1;
+	width:500px;
+/* 	border:solid 1px; */
+}
+
+/*SUBNETS*/
+#network, #host, #ebgp, #ibgp {
+	padding:10px;
+	width:230px;
+	font-size:20px;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+	float:left;
+}
+
+
+#network {
+	background: #DB5088;
+}
+
+#host {
+	background: #01B0EC;
+}
+
+#ebgp {
+	background: #4fbe4f;
+}
+
+#ibgp {
+	background: #01B0EC;
+}
+
+.blue {
+	color: #01B0EC;
+}
+
+.green {
+	color: #4fbe4f;
+}
+
+
+
+
+.small-text {
+	font-size:16px;
+	font-weight: normal;
+	text-align: center;
+}
+
+.bit-pink {
+	background:#DB5088; 
+	padding: 0px 5px;
+	margin:0px 2px;
+	color:#fff;
+}
+
+#htmlContent p {
+	text-align: center;
+}
+
+.left, .rigth {
+	float: left;
+	width: 50%;
+}
+
+.clear {
+	clear:both;
+}

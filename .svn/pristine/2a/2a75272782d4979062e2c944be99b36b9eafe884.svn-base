@@ -1,0 +1,75 @@
+#MENU
+msgid 	"animations"
+msgstr 	"animações"
+
+msgid 	"about"
+msgstr 	"sobre"
+
+msgid 	"contact"
+msgstr 	"contato"
+
+
+#APP CONF
+msgid 	"appTitle"
+msgstr 	"Repositório de Objetos de Aprendizagem"
+
+msgid 	"appSubtitle"
+msgstr 	"Disciplina: Rede de Computadores"
+
+msgid 	"textExplain"
+msgstr 	"Aqui você irá encontrar animações que simulam alguns processos complexos e de difícil compreensão da disciplina de Rede de Computadores. Essas animações foram desenvolvidas com o intuito de facilitar a compreensão dos alunos e estimular o interesse dos alunos na disciplina."
+
+msgid	"clickToStart"
+msgstr	"Clique em 'Continuar' para começar a animação"
+
+msgid	"btnContinue"
+msgstr	"Continuar"
+
+#ANIMATIONS
+msgid	"animationDNSTitle"
+msgstr	"Domain Name System"
+
+msgid 	"animationDNSText"
+msgstr	"O serviço de diretório da internet utilizado para realizar a tradução de endereços IP."
+
+msgid	"animationSubnetsTitle"
+msgstr	"Sub-redes"
+
+msgid	"animationSubnetsText"
+msgstr	"A importância da utilização da máscara de rede para criação de sub-redes lógicas."
+
+msgid	"animationHierarchicalRoutingTitle"
+msgstr	"Roteamento Hierarquico"
+
+msgid	"animationHierarchicalRoutingText"
+msgstr	"Roteamento intra e inter AS na internet com RIP e BGP."
+
+msgid	"animationHybridModelTitle"
+msgstr 	"O modelo Hibrido"
+
+msgid	"animationHybridModelText"
+msgstr 	"Processo de encapsulamento e desencapsulamento realizado durante o envio de uma mensagem."
+
+msgid	"animationThreeWayHandshakeTittle"
+msgstr	"Three-way Handshake"
+
+msgid	"animationThreeWayHandshakeText"
+msgstr 	"Processo de estabelecimento de conexão TCP."
+	
+msgid	"animationAlohaTitle"
+msgstr	"Protocolo Aloha Puro"
+
+msgid	"animationAlohaText"
+msgstr	"Resolvendo problemas de alocação de canais na camada de rede"
+
+msgid	"animationEthernetTitle"
+msgstr	"Protocolo Ethernet"
+
+msgid	"animationEthernetText"
+msgstr	"Funcionamento do protocolo que é unanimidade no mercado de LANs com fio."
+
+msgid	"animationSequenceNumberTitle"
+msgstr	"Número de sequência e de reconhecimento"
+
+msgid	"animationSequenceNumberText"
+msgstr	"Dois dos mais importantes campos do cabeçalho TCP."

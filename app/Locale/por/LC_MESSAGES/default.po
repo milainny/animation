@@ -1,0 +1,125 @@
+#MENU
+msgid 	"animations"
+msgstr 	"animações"
+
+msgid 	"about"
+msgstr 	"sobre"
+
+msgid 	"contact"
+msgstr 	"contato"
+
+
+#APP CONF
+msgid 	"appTitle"
+msgstr 	"Repositório de Objetos de Aprendizagem"
+
+msgid 	"appSubtitle"
+msgstr 	"Disciplina: Rede de Computadores"
+
+msgid 	"textExplain"
+msgstr 	"Aqui você irá encontrar animações que simulam alguns processos complexos e de difícil compreensão da disciplina de Rede de Computadores. Essas animações foram desenvolvidas com o intuito de facilitar a compreensão dos alunos e estimular o interesse dos alunos na disciplina."
+
+msgid	"clickToStart"
+msgstr	"Utilize as setas do teclado para navegar na animação."
+
+msgid	"btnContinue"
+msgstr	"Continuar"
+
+msgid "contactTitle"
+msgstr "Entre em contato"
+
+msgid "textContactExplain"
+msgstr "Todos os campos devem ser preenchidos"
+
+msgid "name"
+msgstr "Nome"
+
+msgid "reason"
+msgstr "Motivo do contato"
+
+msgid "message"
+msgstr "Mensagem"
+
+msgid "aboutTitle"
+msgstr "Sobre o repositório"
+
+msgid "aboutDescription"
+msgstr "Esse repositório foi construído com objetivo de disponibilizar as animações em domínio público. Você pode contribuir com sugestões, correções, e ideias para novas animações por meio da página de contato."
+
+msgid  "ownerDescription"
+msgstr "Idealizadora do projeto"
+
+msgid "member1Description"
+msgstr "Colaborou com a criação do repositório e as animações: Domain Name System, Roteamento Hierárquico e Subredes"
+
+msgid "member2Description"
+msgstr "Colaborou com as animações: O Modelo Híbrido, o processo de Three-way Handshake do TCP, o Protocolo Aloha Puro, o Protocolo Ethernet, TCP – número de sequência e de reconhecimento"
+
+#BUSINESS MESSAGES
+msgid "email-empty-fields"
+msgstr "Existem campos em branco"
+
+msgid "email-success"
+msgstr "Email enviado com sucesso!"
+
+msgid "email-error"
+msgstr "Ocorreu um erro ao enviar o e-mail"
+
+msgid "doubt"
+msgstr "dúvida"
+
+msgid "suggestion"
+msgstr "sugestão"
+
+msgid "error"
+msgstr "erro"
+
+
+#ANIMATIONS
+msgid	"animationDNSTitle"
+msgstr	"Domain Name System"
+
+msgid 	"animationDNSText"
+msgstr	"O serviço de Nomes da Internet utilizado para realizar a tradução de endereços IP."
+
+msgid	"animationSubnetsTitle"
+msgstr	"Sub-redes"
+
+msgid	"animationSubnetsText"
+msgstr	"A importância da utilização da máscara de rede para criação de sub-redes lógicas."
+
+msgid	"animationHierarchicalRoutingTitle"
+msgstr	"Roteamento Hierárquico"
+
+msgid	"animationHierarchicalRoutingText"
+msgstr	"Roteamento intra e inter AS na internet com RIP e BGP."
+
+msgid	"animationHybridModelTitle"
+msgstr 	"O modelo Híbrido"
+
+msgid	"animationHybridModelText"
+msgstr 	"Processo de encapsulamento e desencapsulamento realizado durante o envio de uma mensagem."
+
+msgid	"animationThreeWayHandshakeTittle"
+msgstr	"Three-way Handshake"
+
+msgid	"animationThreeWayHandshakeText"
+msgstr 	"Processo de estabelecimento de conexão TCP."
+	
+msgid	"animationAlohaTitle"
+msgstr	"Protocolo Aloha Puro"
+
+msgid	"animationAlohaText"
+msgstr	"Resolvendo problemas de alocação de canais na camada de enlace"
+
+msgid	"animationEthernetTitle"
+msgstr	"Protocolo Ethernet"
+
+msgid	"animationEthernetText"
+msgstr	"Funcionamento do protocolo que é unanimidade no mercado de LANs com fio."
+
+msgid	"animationSequenceNumberTitle"
+msgstr	"Número de sequência e de reconhecimento"
+
+msgid	"animationSequenceNumberText"
+msgstr	"Dois dos mais importantes campos do cabeçalho TCP."
