@@ -12,7 +12,22 @@ ImageElements = Object.freeze({
 	"SERVER": { name: "server", dx: 100, textDy: 25 },
 	"ROUTER": { name: "router", dx: 200, textDy: -85 },
 	"SWITCH": { name: "router", dx: 300, textDy: -85 },
-	"ARROW" : { name: "arrow", dx: 850 }
+	"ARROW" : { name: "arrow", dx: 850 },
+	"GARBE" : { name: "garbe", dx: 1700},
+	"TRAN"  : { name: "tran", dx: 1600},
+	"WHITE" : { name: "white", dx: 400},
+	"SEG1TCP" : { name: "seg1tcp", dx: 2000},
+	"SEG2TCP" : { name: "seg2tcp", dx: 2200},
+	"SEG3TCP" : { name: "seg3tcp", dx: 2400},
+	"SEG1TWHS" : { name: "seg1twhs", dx: 2600},
+	"SEG2TWHS" : { name: "seg2twhs", dx: 2800},
+	"SEG3TWHS" : { name: "seg3twhs", dx: 3000},
+	"LINE" : {name: "line", dx: 1001},
+	"LINE2" : {name: "line2", dx: 500},
+	"ARROW2" : {name: "arrow2", dx: 950},
+	"ARROW3" : {name: "arrow2", dx: 3200},
+	"PACK" : {name: "pack", dx: 1900},
+	"SHINE" : {name: "shine", dx: 1800},
 });
 
 //Elementos da página
@@ -490,16 +505,16 @@ Rectangle.prototype.draw = function(ctx) {
 };
 
 //Responsável pelos elementos da imagem
-function ImageHost(imgElement, coord, message) {
+function ImageHost(imgElement, coord, message, dWidth, dHeight, sWidth) {
 	this.sX = (imgElement) ? imgElement.dx : 0;
 	//TODO renomear essas variaveis para algo mais legivel!
 	this.sY = 0;
-	this.sWidth = 100;
+	this.sWidth = (sWidth) ? sWidth: 100;
 	this.sHeight = 100;
 	this.dX = (coord) ? coord.x : 0;
 	this.dY = (coord) ? coord.y: 135;
-	this.dWidth = 100;
-	this.dHeight = 100;
+	this.dWidth = (dWidth) ? dWidth: 100;
+	this.dHeight = (dHeight) ? dHeight: 100;
 	this.velocityX = 0;
 	this.img = new Image();
 	this.img.src = "../../img/elements.png";
@@ -524,6 +539,23 @@ ImageHost.prototype.setDx = function(dX) {
 ImageHost.prototype.setDy = function(dY) {
 	this.dY = dY;
 };
+
+ImageHost.prototype.setDWidth = function(dWidth) {
+	this.dWidth = dWidth;
+};
+
+ImageHost.prototype.getDWidth = function() {
+	return this.dWidth;
+};
+
+ImageHost.prototype.setDHeight = function(dHeight) {
+	this.dHeight = dHeight;
+};
+
+ImageHost.prototype.getDHeight = function() {
+	return this.dHeight;
+};
+
 
 ImageHost.prototype.getContext = function() {
 	return this.context;
@@ -1764,149 +1796,10 @@ TextMessageAnimation.prototype.drawText = function(ctx, text) {
 
 //Aloha Animation
 
-ImageElementsAloha = Object.freeze({
-	"HOST" : { name:"host", dx: 0, textDy: 25 },
-	"TRAN" : { name:"tran", dx: 200, textDy: 10 },
-	"GARBE": { name: "server", dx: 300, textDy: 25 },
-	"WHITE": { name: "white", dx: 500, textDy: -85 },
-	"SWITCH": { name: "router", dx: 300, textDy: -85 },
-	"ARROW" : { name: "arrow", dx: 850 }
-});
-
-function ImageAloha(imgElement, coord, message, dWidth, dHeight) {
-	this.sX = (imgElement) ? imgElement.dx : 0;
-	//TODO renomear essas variaveis para algo mais legivel!
-	this.sY = 0;
-	this.sWidth = 100;
-	this.sHeight = 100;
-	this.dX = (coord) ? coord.x : 0;
-	this.dY = (coord) ? coord.y: 135;
-	this.dWidth = dWidth;
-	this.dHeight = dHeight;
-	this.velocityX = 0;
-	this.img = new Image();
-	this.img.src = "../../img/aloha.png";
-	this.opacity = 0;
-	this.imgElement = imgElement;
-	this.rotate = (coord.rotate) ? coord.rotate : 0;
-
-	this.title = (message) ? message.title: undefined;
-	this.subtitle = (message) ? message.subtitle : undefined;
-
-	//FIXME construtor não seta o valor
-	__construct = function() {
-		//this.img.src = "img/elements.png";
-	}();
-
-};
-
-ImageAloha.prototype.setDx = function(dX) {
-	this.dX = dX;
-};
-
-ImageAloha.prototype.setDy = function(dY) {
-	this.dY = dY;
-};
-
-ImageAloha.prototype.getContext = function() {
-	return this.context;
-};
-
-ImageAloha.prototype.getImg = function() {
-	return this.img;
-};
-
-ImageAloha.prototype.getPosxText = function() {
-	return this.sWidth / 2 + this.dX;
-};
-
-ImageAloha.prototype.getPosyText = function() {
-	return this.dY + this.sHeight + this.imgElement.textDy;
-};
-
-ImageAloha.prototype.getPosyTextSubtitle = function() {
-	return this.getPosyText() + 20;
-};
-
-ImageAloha.prototype.getDx = function() {
-	return this.dX;
-};
-
-ImageAloha.prototype.getDy = function() {
-	return this.dY;
-};
-
-ImageAloha.prototype.setSx = function(sX) {
-	this.sX = sX;
-};
-
-ImageAloha.prototype.setSy = function(sY) {
-	this.sY = sY;
-};
-
-ImageAloha.prototype.drawText = function(ctx, colorText) {
-	//settings
-	ctx.save();
-
-	ctx.font = "bold 15pt Arial";
-	if(this.imgElement.text) {
-		ctx.font = this.imgElement.text;
-	}
-	ctx.textAlign = 'center';
-	ctx.textBaseLine = 'top';
-
-	if(colorText) {
-		ctx.fillStyle = colorText;
-	}
-
-	if (this.title) {
-		ctx.fillText(this.title, this.getPosxText(), this.getPosyText(), 300);
-	}
-
-	if (this.subtitle) {
-		ctx.font = "13pt Arial";
-		ctx.fillText(this.subtitle, this.getPosxText(), this.getPosyTextSubtitle(), 300);
-	}
-
-	ctx.restore();
-
-};
-
-ImageAloha.prototype.drawImage = function(ctx, colorText, scale) {
-	var color = "black";
-	//desenha imagem
-	ctx.save();
-
-	if(scale) {
-		ctx.translate(scale, scale);
-	}
-
-	ctx.drawImage(this.img, this.sX, this.sY, this.sWidth, this.sHeight, this.dX, this.dY, this.dWidth, this.dHeight);
-
-	//desenha o texto
-
-
-	if(colorText) {
-		color = colorText;
-	}
-
-	this.drawText(ctx, color);
-
-	ctx.restore();
-
-};
-
-ImageAloha.prototype.updateImage = function() {
-	opacity += 1;
-	velocityX += Math.random() * 0.1 * (55 - dWidth);
-	dWidth += velocityX;a
-	dHeight += velocityX;
-};
-
 var AlohaConf = {
-	"hosts": [new ImageAloha(ImageElementsAloha.HOST, {"x":200, "y":200}, {"title":""}, 100, 100),
-              new ImageAloha(ImageElementsAloha.HOST, {"x":500, "y":200}, {"title":""}, 100, 100),
-				new ImageAloha(ImageElementsAloha.HOST, {"x":800, "y":200}, {"title":""}, 100, 100)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":200, "y":200}, {"title":""}, 100, 100),
+              new ImageHost(ImageElements.HOST, {"x":500, "y":200}, {"title":""}, 100, 100),
+				new ImageHost(ImageElements.HOST, {"x":800, "y":200}, {"title":""}, 100, 100)],
 
 	"paths": [{"sx":235, "sy":400, "dx":845, "dy":400}, //linha reta
 				    {"sx":240, "sy":280, "dx":240, "dy":400},
@@ -1918,34 +1811,34 @@ var AlohaConf = {
 					 {"text": "Host B", "coord": {"x":540, "y":180}},
 					 {"text": "Host C", "coord": {"x":840, "y":180}}],
 
- "img": [new ImageAloha(ImageElementsAloha.WHITE, {"x":480, "y":450}, {"title":""}, 100, 100)],
+ "img": [new ImageHost(ImageElements.WHITE, {"x":480, "y":450}, {"title":""}, 100, 100)],
 }
 var AlohaTranConf = {
 	"hosts": AlohaConf.hosts,
 	"paths": AlohaConf.paths,
 	"text": AlohaConf.text,
-	"imgAloha": [new ImageAloha(ImageElementsAloha.TRAN, {"x":400, "y":360}, {"title":""}, 100, 100)],
+	"imgAloha": [new ImageHost(ImageElements.TRAN, {"x":350, "y":349}, {"title":""}, 100, 100)],
 }
 
 var AlohaGarbeConf1 = {
 	"hosts": AlohaConf.hosts,
 	"paths": AlohaConf.paths,
 	"text": AlohaConf.text,
-	"img": [new ImageAloha(ImageElementsAloha.GARBE, {"x":480, "y":450}, {"title":""}, 100, 100)],
+	"img": [new ImageHost(ImageElements.GARBE, {"x":580, "y":370}, {"title":""}, 100, 100)],
 }
 
 var AlohaGarbeConf2 = {
 	"hosts": AlohaConf.hosts,
 	"paths": AlohaConf.paths,
 	"text": AlohaConf.text,
-	"img": [new ImageAloha(ImageElementsAloha.GARBE, {"x":400, "y":300}, {"title":""}, 100, 100)],
+	"img": [new ImageHost(ImageElements.GARBE, {"x":400, "y":300}, {"title":""}, 100, 100)],
 }
 
 var AlohaGarbeConf3 = {
 	"hosts": AlohaConf.hosts,
 	"paths": AlohaConf.paths,
 	"text": AlohaConf.text,
-	"img": [new ImageAloha(ImageElementsAloha.GARBE, {"x":90, "y":300}, {"title":""}, 100, 100)],
+	"img": [new ImageHost(ImageElements.GARBE, {"x":90, "y":300}, {"title":""}, 100, 100)],
 }
 
 var AlohaAnimationTransition = function(animationConf, msgToShow, persistent, next) {
@@ -2117,159 +2010,13 @@ ImageElementsThreeWayhandShake = Object.freeze({
 	"ARROW2" : { name: "arrow2", dx: 600 }
 });
 
-function ImageThreeWayhandShake(imgElement, coord, message, dWidth, dHeight) {
-	this.sX = (imgElement) ? imgElement.dx : 0;
-	//TODO renomear essas variaveis para algo mais legivel!
-	this.sY = 0;
-	this.sWidth = 100;
-	this.sHeight = 100;
-	this.dX = (coord) ? coord.x : 0;
-	this.dY = (coord) ? coord.y: 135;
-	this.dWidth = dWidth;
-	this.dHeight = dHeight;
-	this.velocityX = 0;
-	this.img = new Image();
-	this.img.src = "../../img/threeWayhandShake.png";
-	this.opacity = 0;
-	this.imgElement = imgElement;
-	this.rotate = (coord.rotate) ? coord.rotate : 0;
-
-	this.title = (message) ? message.title: undefined;
-	this.subtitle = (message) ? message.subtitle : undefined;
-
-	//FIXME construtor não seta o valor
-	__construct = function() {
-		//this.img.src = "img/elements.png";
-	}();
-
-};
-
-ImageThreeWayhandShake.prototype.setDx = function(dX) {
-	this.dX = dX;
-};
-
-ImageThreeWayhandShake.prototype.setDy = function(dY) {
-	this.dY = dY;
-};
-
-ImageThreeWayhandShake.prototype.setDWidth = function(dWidth) {
-	this.dWidth = dWidth;
-};
-
-ImageThreeWayhandShake.prototype.getDWidth = function() {
-	return this.dWidth;
-};
-
-ImageThreeWayhandShake.prototype.setDHeight = function(dHeight) {
-	this.dHeight = dHeight;
-};
-
-ImageThreeWayhandShake.prototype.getDHeight = function() {
-	return this.dHeight;
-};
-
-ImageThreeWayhandShake.prototype.getContext = function() {
-	return this.context;
-};
-
-ImageThreeWayhandShake.prototype.getImg = function() {
-	return this.img;
-};
-
-ImageThreeWayhandShake.prototype.getPosxText = function() {
-	return this.sWidth / 2 + this.dX;
-};
-
-ImageThreeWayhandShake.prototype.getPosyText = function() {
-	return this.dY + this.sHeight + this.imgElement.textDy;
-};
-
-ImageThreeWayhandShake.prototype.getPosyTextSubtitle = function() {
-	return this.getPosyText() + 20;
-};
-
-ImageThreeWayhandShake.prototype.getDx = function() {
-	return this.dX;
-};
-
-ImageThreeWayhandShake.prototype.getDy = function() {
-	return this.dY;
-};
-
-ImageThreeWayhandShake.prototype.setSx = function(sX) {
-	this.sX = sX;
-};
-
-ImageThreeWayhandShake.prototype.setSy = function(sY) {
-	this.sY = sY;
-};
-
-ImageThreeWayhandShake.prototype.drawText = function(ctx, colorText) {
-	//settings
-	ctx.save();
-
-	ctx.font = "bold 15pt Arial";
-	if(this.imgElement.text) {
-		ctx.font = this.imgElement.text;
-	}
-	ctx.textAlign = 'center';
-	ctx.textBaseLine = 'top';
-
-	if(colorText) {
-		ctx.fillStyle = colorText;
-	}
-
-	if (this.title) {
-		ctx.fillText(this.title, this.getPosxText(), this.getPosyText(), 300);
-	}
-
-	if (this.subtitle) {
-		ctx.font = "13pt Arial";
-		ctx.fillText(this.subtitle, this.getPosxText(), this.getPosyTextSubtitle(), 300);
-	}
-
-	ctx.restore();
-
-};
-
-ImageThreeWayhandShake.prototype.drawImage = function(ctx, colorText, scale) {
-	var color = "black";
-	//desenha imagem
-	ctx.save();
-
-	if(scale) {
-		ctx.translate(scale, scale);
-	}
-
-	ctx.drawImage(this.img, this.sX, this.sY, this.sWidth, this.sHeight, this.dX, this.dY, this.dWidth, this.dHeight);
-
-	//desenha o texto
-
-
-	if(colorText) {
-		color = colorText;
-	}
-
-	this.drawText(ctx, color);
-
-	ctx.restore();
-
-};
-
-ImageThreeWayhandShake.prototype.updateImage = function() {
-	opacity += 1;
-	velocityX += Math.random() * 0.1 * (55 - dWidth);
-	dWidth += velocityX;a
-	dHeight += velocityX;
-};
-
 var ThreeWayhandShakeConf = {
-	"hosts": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.HOST, {"x":850, "y":320}, {"title":""},100,100)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":""},100,100)],
 
-	"server": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SERVER, {"x":150, "y":320}, {"title":""},100,100)],
+	"server": [new ImageHost(ImageElements.SERVER, {"x":150, "y":320}, {"title":""},100,100)],
 
-	"router": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ROUTER, {"x":400, "y":330}, {"title":""},80,80),
-						 new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ROUTER, {"x":600, "y":330}, {"title":""},80,80)],
+	"router": [new ImageHost(ImageElements.ROUTER, {"x":400, "y":330}, {"title":""},80,80),
+						 new ImageHost(ImageElements.ROUTER, {"x":600, "y":330}, {"title":""},80,80)],
 
 	"paths": [{"sx":200, "sy":370, "dx":450, "dy":370},
 				    {"sx":460, "sy":370, "dx":650, "dy":370},
@@ -2289,21 +2036,21 @@ var ThreeWayConf1 = {
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
 	"text": ThreeWayhandShakeConf.text,
-	"img": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO, {"x":850, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG1TWHS, {"x":850, "y":320}, {"title":""}, 50, 50, 200)],
 }
 
-var ThreeWayConf7 = {
+var ThreeWayConf2 = {
 	"hosts": ThreeWayhandShakeConf.hosts,
 	"server": ThreeWayhandShakeConf.server,
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
 	"text": ThreeWayhandShakeConf.text,
-	"img": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO3, {"x":850, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG1TWHS, {"x":850, "y":100}, {"title":""}, 165, 100, 200)],
 }
 
 var ThreeWayConf3 = {
-	"hosts":[new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.HOST, {"x":850, "y":320}, {"title":""},100,100),
-								new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO, {"x":850, "y":100}, {"title":""}, 155, 155)],
+	"hosts":[new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":""},100,100),
+								new ImageHost(ImageElements.SEG1TWHS, {"x":850, "y":120}, {"title":""}, 165, 100,200)],
 	"server": ThreeWayhandShakeConf.server,
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
@@ -2316,12 +2063,12 @@ var ThreeWayConf4 = {
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
 	"text": ThreeWayhandShakeConf.text,
-	"img": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO2, {"x":150, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG2TWHS, {"x":150, "y":320}, {"title":""}, 50, 50, 200)],
 }
 
 var ThreeWayConf5 = {
-	"hosts":[new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.HOST, {"x":850, "y":320}, {"title":""},100,100),
-								new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO2, {"x":150, "y":100}, {"title":""}, 155, 155)],
+	"hosts":[new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":""},100,100),
+								new ImageHost(ImageElements.SEG2TWHS, {"x":150, "y":120}, {"title":""}, 165, 100, 200)],
 	"server": ThreeWayhandShakeConf.server,
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
@@ -2334,9 +2081,17 @@ var ThreeWayConf6 = {
 	"router": ThreeWayhandShakeConf.router,
 	"paths": ThreeWayhandShakeConf.paths,
 	"text": ThreeWayhandShakeConf.text,
-	"img": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO2, {"x":150, "y":100}, {"title":""}, 155, 155)],
+	"img": [new ImageHost(ImageElements.SEG2TWHS, {"x":150, "y":100}, {"title":""}, 165, 100, 200)],
 }
 
+var ThreeWayConf7 = {
+	"hosts": ThreeWayhandShakeConf.hosts,
+	"server": ThreeWayhandShakeConf.server,
+	"router": ThreeWayhandShakeConf.router,
+	"paths": ThreeWayhandShakeConf.paths,
+	"text": ThreeWayhandShakeConf.text,
+	"img": [new ImageHost(ImageElements.SEG3TWHS, {"x":850, "y":320}, {"title":""}, 50, 50, 200)],
+}
 
 var ThreeWayhandShakeAnimation = function(animationConf, msgToShow, bgClear, persistent, next) {
 	this.prototype = new Animation(msgToShow);
@@ -2426,97 +2181,99 @@ TwhsIncrease.prototype.render = function(ctx) {
 };
 
 TwhsIncrease.prototype.update = function(ctx) {
-	if(this.seg[0].getDy()>= 100) {
+	if(this.seg[0].getDy()>= 120) {
 		this.seg[0].setDy(this.seg[0].getDy() - 5);
-		if (this.seg[0].getDHeight() <= 150){
+		if (this.seg[0].getDWidth() <= 165){
 			this.seg[0].setDWidth(this.seg[0].getDWidth() + 5);
-			this.seg[0].setDHeight(this.seg[0].getDHeight() + 5);
 		}
+		if (this.seg[0].getDHeight() <= 100){
+		  this.seg[0].setDHeight(this.seg[0].getDHeight() + 5);
+	  }
 	}else {
 		this.prototype.stop();
 	}
 };
 
 var ThreeWayArrow1 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":955, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":994, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":925, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW, {"x":845, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":956, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":991, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE, {"x":925, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW2, {"x":830, "y":240, "rotate": 90}, {"title":""}, 60, 70,50)],
 }
 
 var ThreeWayArrow2 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":935, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":974, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW, {"x":845, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":935, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":970, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW2, {"x":830, "y":240, "rotate": 90}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow3 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":915, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":954, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW, {"x":845, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":915, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":950, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW2, {"x":830, "y":240, "rotate": 90}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow4 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":901, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":940, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW, {"x":845, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":901, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":936, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":885, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW2, {"x":830, "y":240, "rotate": 90}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow5 = {
 	"imgs": [
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":920, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":881, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW, {"x":845, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+					new ImageHost(ImageElements.LINE2, {"x":912, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":877, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW2, {"x":830, "y":240, "rotate": 90}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow6 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":155, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":155, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":160, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE, {"x":160, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":275, "y":235}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow7 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":170, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":170, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":180, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE, {"x":180, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":275, "y":235}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow8 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":185, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":185, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":200, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE, {"x":200, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":275, "y":235}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow9 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":205, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":205, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":220, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":220, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":275, "y":235}, {"title":""}, 60, 70, 50)],
 }
 
 
 var ThreeWayArrow10 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":220, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":220, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":232, "y":250}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":240, "y":250}, {"title":""}, 50, 50),
+					new ImageHost(ImageElements.LINE2, {"x":240, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":275, "y":235}, {"title":""}, 60, 70, 50)],
 }
 
 var ThreeWayArrow11 = {
-	"imgs": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE, {"x":235, "y":250}, {"title":""}, 50, 50),
-					new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.LINE2, {"x":235, "y":220}, {"title":""}, 50, 50),
-				  new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.ARROW2, {"x":275, "y":250, "rotate": 90}, {"title":""}, 50, 50)],
+	"imgs": [new ImageHost(ImageElements.LINE, {"x":260, "y":250}, {"title":""}, 50, 50, 1),
+					new ImageHost(ImageElements.LINE2, {"x":260, "y":220}, {"title":""}, 50, 50),
+				  new ImageHost(ImageElements.ARROW3, {"x":285, "y":235}, {"title":""}, 60, 70, 50)],
 }
+
 var HtmlMessageAnimation2 = function(htmlElements, msgToShow, conf) {
 	this.prototype = new Animation(msgToShow);
 	this.elements = htmlElements;
@@ -2534,41 +2291,60 @@ HtmlMessageAnimation2.prototype.render = function(ctx) {
 	}
 };
 
-var ThreeWayConf2 = {
-	"hosts": ThreeWayhandShakeConf.hosts,
-	"server": ThreeWayhandShakeConf.server,
-	"router": ThreeWayhandShakeConf.router,
-	"paths": ThreeWayhandShakeConf.paths,
-	"text": ThreeWayhandShakeConf.text,
-	"img": [new ImageThreeWayhandShake(ImageElementsThreeWayhandShake.SEGMENTO, {"x":850, "y":100}, {"title":""}, 155, 155)],
-}
-
 var TwhsDecreaseLeft = function(conf, msg) {
 	this.prototype = new Animation();
-	//this.prototype.bgClear = true;
-	this.twhsAnimation = new ThreeWayhandShakeAnimation(conf, msg);
+	this.hosts = conf.hosts;
+	this.server = conf.server;
+	this.router = conf.router;
+	this.paths = conf.paths;
+	this.text = conf.text;
 	this.html = new HtmlContentAnimation(msg);
 	this.seg = conf.img;
-	this.whi = new ImageAloha(ImageElementsAloha.WHITE, {"x":850, "y":100}, {"title":""}, 800, 155);
-	this.seg[0].setDWidth(155);
-	this.seg[0].setDHeight(155);
+	this.seg[0].setDWidth(165);
+	this.seg[0].setDHeight(100);
 	this.seg[0].setDy(100);
 	this.seg[0].setDx(850);
 	this.prototype.next = true;
+	this.prototype.bgClear = true;
 };
 
 TwhsDecreaseLeft.prototype.render = function(ctx) {
-  this.whi.drawImage(ctx);
+	//caminhos
+	this.drawPaths(ctx, this.paths);
+	//roteadores
+	for (var i = 0; i < this.hosts.length; i++) {
+		this.hosts[i].drawImage(ctx);
+	}
+	//servidores
+	if (this.server){
+		for (var i = 0; i < this.server.length; i++) {
+			this.server[i].drawImage(ctx);
+		}
+	}
+
+	//rotiadores
+	for (var i = 0; i < this.router.length; i++) {
+		this.router[i].drawImage(ctx);
+	}
+
+	//nomes das redes
+	if (this.text){
+		for (var i = 0; i < this.text.length; i++) {
+	 		this.drawText(ctx, this.text[i]);
+		}
+	}
 	this.seg[0].drawImage(ctx);
 
 };
 
 TwhsDecreaseLeft.prototype.update = function(ctx) {
-	if(this.seg[0].getDy()< 355) {
+	if(this.seg[0].getDy()< 360) {
 		this.seg[0].setDy(this.seg[0].getDy() + 5);
-		if (this.seg[0].getDHeight() > 30){
-			this.seg[0].setDWidth(this.seg[0].getDWidth() - 5);
+		if (this.seg[0].getDHeight() > 20){
 			this.seg[0].setDHeight(this.seg[0].getDHeight() - 5);
+		}
+		if (this.seg[0].getDWidth() > 30){
+			this.seg[0].setDWidth(this.seg[0].getDWidth() - 5);
 		}
 	}else if (this.seg[0].getDx() > 200) {
 		this.seg[0].setDx(this.seg[0].getDx() - 2);
@@ -2577,32 +2353,86 @@ TwhsDecreaseLeft.prototype.update = function(ctx) {
 	}
 };
 
+TwhsDecreaseLeft.prototype.drawPaths = function(ctx, paths) {
+	//caminhos
+	for (var i = 0; i < paths.length; i++) {
+		this.drawPath(ctx, paths[i]);
+	}
+};
+
+TwhsDecreaseLeft.prototype.drawPath = function(ctx, coord) {
+	ctx.beginPath();
+	ctx.lineWidth=(coord.line) ? (coord.line) : "10";
+	ctx.strokeStyle= (coord.color) ? coord.color : "#999"; // Green path
+	ctx.moveTo(coord.sx, coord.sy);
+	ctx.lineTo(coord.dx,coord.dy);
+	ctx.stroke(); // Draw it
+};
+
+TwhsDecreaseLeft.prototype.drawText = function(ctx, text) {
+	ctx.save();
+	ctx.font = APP.CONF.getTextStyle(text.style);
+	ctx.fillStyle = (text.color) ? text.color : "#000";
+	ctx.textAlign = 'center';
+	ctx.textBaseLine = 'top';
+	ctx.fillText(text.text, text.coord.x, text.coord.y, 300);
+	ctx.restore();
+};
+
+
 var TwhsDecreaseRight = function(conf, msg) {
 	this.prototype = new Animation();
-	//this.prototype.bgClear = true;
-	this.twhsAnimation = new ThreeWayhandShakeAnimation(conf, msg);
+	this.hosts = conf.hosts;
+	this.server = conf.server;
+	this.router = conf.router;
+	this.paths = conf.paths;
+	this.text = conf.text;
 	this.html = new HtmlContentAnimation(msg);
 	this.seg = conf.img;
-	this.whi = new ImageAloha(ImageElementsAloha.WHITE, {"x":150, "y":100}, {"title":""}, 800, 155);
-	this.seg[0].setDWidth(155);
-	this.seg[0].setDHeight(155);
+	this.seg[0].setDWidth(165);
+	this.seg[0].setDHeight(100);
 	this.seg[0].setDy(100);
 	this.seg[0].setDx(150);
 	this.prototype.next = true;
+	this.prototype.bgClear = true;
 };
 
 TwhsDecreaseRight.prototype.render = function(ctx) {
-  this.whi.drawImage(ctx);
-	this.seg[0].drawImage(ctx);
+	//caminhos
+	this.drawPaths(ctx, this.paths);
+	//roteadores
+	for (var i = 0; i < this.hosts.length; i++) {
+		this.hosts[i].drawImage(ctx);
+	}
+	//servidores
+	if (this.server){
+		for (var i = 0; i < this.server.length; i++) {
+			this.server[i].drawImage(ctx);
+		}
+	}
+	//rotiadores
+	for (var i = 0; i < this.router.length; i++) {
+		this.router[i].drawImage(ctx);
+	}
 
+	//nomes das redes
+	if (this.text){
+		for (var i = 0; i < this.text.length; i++) {
+	 		this.drawText(ctx, this.text[i]);
+		}
+	}
+
+	this.seg[0].drawImage(ctx);
 };
 
 TwhsDecreaseRight.prototype.update = function(ctx) {
-	if(this.seg[0].getDy()< 355) {
+	if(this.seg[0].getDy()< 360) {
 		this.seg[0].setDy(this.seg[0].getDy() + 5);
-		if (this.seg[0].getDHeight() > 30){
-			this.seg[0].setDWidth(this.seg[0].getDWidth() - 5);
+		if (this.seg[0].getDHeight() > 20){
 			this.seg[0].setDHeight(this.seg[0].getDHeight() - 5);
+		}
+		if (this.seg[0].getDWidth() > 30){
+			this.seg[0].setDWidth(this.seg[0].getDWidth() - 5);
 		}
 	}else if (this.seg[0].getDx() < 850) {
 		this.seg[0].setDx(this.seg[0].getDx() + 2);
@@ -2611,175 +2441,41 @@ TwhsDecreaseRight.prototype.update = function(ctx) {
 	}
 };
 
-//tcp Animation
-
-ImageElementsTcp = Object.freeze({
-	"HOST" : { name:"host", dx: 0, textDy: 25 },
-	"SERVER" : { name:"server", dx: 100, textDy: 10 },
-	"ROUTER": { name: "router", dx: 200, textDy: 25 },
-	"SEGMENTO": { name: "segmento", dx: 700, textDy: -85 },
-	"SEGMENTO2": { name: "segmento2", dx: 1200, textDy: -85 },
-	"SEGMENTO3": { name: "segmento3", dx: 1100, textDy: -85 },
-	"SEGMENTO4": { name: "segmento4", dx: 800, textDy: -85 },
-	"SEGMENTO5": { name: "segmento5", dx: 900, textDy: -85 },
-	"LINE": { name: "line", dx: 300, textDy: -85 },
-	"LINE2" : { name: "line2", dx: 400 },
-	"ARROW" : { name: "arrow", dx: 500 },
-	"ARROW2" : { name: "arrow2", dx: 600 }
-});
-
-function ImageTcp(imgElement, coord, message, dWidth, dHeight) {
-	this.sX = (imgElement) ? imgElement.dx : 0;
-	//TODO renomear essas variaveis para algo mais legivel!
-	this.sY = 0;
-	this.sWidth = 100;
-	this.sHeight = 100;
-	this.dX = (coord) ? coord.x : 0;
-	this.dY = (coord) ? coord.y: 135;
-	this.dWidth = dWidth;
-	this.dHeight = dHeight;
-	this.velocityX = 0;
-	this.img = new Image();
-	this.img.src = "../../img/tcp.png";
-	this.opacity = 0;
-	this.imgElement = imgElement;
-	this.rotate = (coord.rotate) ? coord.rotate : 0;
-
-	this.title = (message) ? message.title: undefined;
-	this.subtitle = (message) ? message.subtitle : undefined;
-
-	//FIXME construtor não seta o valor
-	__construct = function() {
-		//this.img.src = "img/elements.png";
-	}();
-
-};
-
-ImageTcp.prototype.setDx = function(dX) {
-	this.dX = dX;
-};
-
-ImageTcp.prototype.setDy = function(dY) {
-	this.dY = dY;
-};
-
-ImageTcp.prototype.setDWidth = function(dWidth) {
-	this.dWidth = dWidth;
-};
-
-ImageTcp.prototype.getDWidth = function() {
-	return this.dWidth;
-};
-
-ImageTcp.prototype.setDHeight = function(dHeight) {
-	this.dHeight = dHeight;
-};
-
-ImageTcp.prototype.getDHeight = function() {
-	return this.dHeight;
-};
-
-ImageTcp.prototype.getContext = function() {
-	return this.context;
-};
-
-ImageTcp.prototype.getImg = function() {
-	return this.img;
-};
-
-ImageTcp.prototype.getPosxText = function() {
-	return this.sWidth / 2 + this.dX;
-};
-
-ImageTcp.prototype.getPosyText = function() {
-	return this.dY + this.sHeight + this.imgElement.textDy;
-};
-
-ImageTcp.prototype.getPosyTextSubtitle = function() {
-	return this.getPosyText() + 20;
-};
-
-ImageTcp.prototype.getDx = function() {
-	return this.dX;
-};
-
-ImageTcp.prototype.getDy = function() {
-	return this.dY;
-};
-
-ImageTcp.prototype.setSx = function(sX) {
-	this.sX = sX;
-};
-
-ImageTcp.prototype.setSy = function(sY) {
-	this.sY = sY;
-};
-
-ImageTcp.prototype.drawText = function(ctx, colorText) {
-	//settings
-	ctx.save();
-
-	ctx.font = "bold 15pt Arial";
-	if(this.imgElement.text) {
-		ctx.font = this.imgElement.text;
+TwhsDecreaseRight.prototype.drawPaths = function(ctx, paths) {
+	//caminhos
+	for (var i = 0; i < paths.length; i++) {
+		this.drawPath(ctx, paths[i]);
 	}
+};
+
+TwhsDecreaseRight.prototype.drawPath = function(ctx, coord) {
+	ctx.beginPath();
+	ctx.lineWidth=(coord.line) ? (coord.line) : "10";
+	ctx.strokeStyle= (coord.color) ? coord.color : "#999"; // Green path
+	ctx.moveTo(coord.sx, coord.sy);
+	ctx.lineTo(coord.dx,coord.dy);
+	ctx.stroke(); // Draw it
+};
+
+TwhsDecreaseRight.prototype.drawText = function(ctx, text) {
+	ctx.save();
+	ctx.font = APP.CONF.getTextStyle(text.style);
+	ctx.fillStyle = (text.color) ? text.color : "#000";
 	ctx.textAlign = 'center';
 	ctx.textBaseLine = 'top';
-
-	if(colorText) {
-		ctx.fillStyle = colorText;
-	}
-
-	if (this.title) {
-		ctx.fillText(this.title, this.getPosxText(), this.getPosyText(), 300);
-	}
-
-	if (this.subtitle) {
-		ctx.font = "13pt Arial";
-		ctx.fillText(this.subtitle, this.getPosxText(), this.getPosyTextSubtitle(), 300);
-	}
-
+	ctx.fillText(text.text, text.coord.x, text.coord.y, 300);
 	ctx.restore();
-
 };
 
-ImageTcp.prototype.drawImage = function(ctx, colorText, scale) {
-	var color = "black";
-	//desenha imagem
-	ctx.save();
 
-	if(scale) {
-		ctx.translate(scale, scale);
-	}
-
-	ctx.drawImage(this.img, this.sX, this.sY, this.sWidth, this.sHeight, this.dX, this.dY, this.dWidth, this.dHeight);
-
-	//desenha o texto
-
-
-	if(colorText) {
-		color = colorText;
-	}
-
-	this.drawText(ctx, color);
-
-	ctx.restore();
-
-};
-
-ImageTcp.prototype.updateImage = function() {
-	opacity += 1;
-	velocityX += Math.random() * 0.1 * (55 - dWidth);
-	dWidth += velocityX;a
-	dHeight += velocityX;
-};
+//tcp Animation
 
 var TcpConf = {
-	"hosts": [new ImageTcp(ImageElementsTcp.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
-						new ImageTcp(ImageElementsTcp.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"}),
+						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"})],
 
-	"router": [new ImageTcp(ImageElementsTcp.ROUTER, {"x":400, "y":330}, {"title":""},80,80),
-						 new ImageTcp(ImageElementsTcp.ROUTER, {"x":600, "y":330}, {"title":""},80,80)],
+	"router": [new ImageHost(ImageElements.ROUTER, {"x":400, "y":330}, {"title":""},80,80),
+						 new ImageHost(ImageElements.ROUTER, {"x":600, "y":330}, {"title":""},80,80)],
 
 	"paths": [{"sx":200, "sy":370, "dx":450, "dy":370},
 				    {"sx":460, "sy":370, "dx":650, "dy":370},
@@ -2792,22 +2488,23 @@ var TcpConf1 = {
 	"hosts": TcpConf.hosts,
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO, {"x":850, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG1TCP, {"x":850, "y":320}, {"title":""}, 50, 50, 200)],
 }
 
 var TcpConf2 = {
 	"hosts": TcpConf.hosts,
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO, {"x":850, "y":100}, {"title":""}, 155, 155)],
+	"img": [new ImageHost(ImageElements.SEG1TCP, {"x":850, "y":100}, {"title":""}, 165, 100, 200)],
 }
 
 var TcpConf3 = {
 	"hosts":TcpConf.hosts,
-	"server":[new ImageTcp(ImageElementsTcp.SEGMENTO, {"x":850, "y":100}, {"title":""}, 155, 155)], //segmento e nao server
+  "server": [],
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
 	"text":[],
+	"img": [new ImageHost(ImageElements.SEG1TCP, {"x":850, "y":120}, {"title":""}, 165, 100, 200)],
 }
 
 var TcpConf4 = {
@@ -2816,13 +2513,13 @@ var TcpConf4 = {
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
 	"text":[],
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO2, {"x":150, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG2TCP, {"x":150, "y":320}, {"title":""}, 50, 50, 200)],
 }
 
 var TcpConf5 = {
-	"hosts": [new ImageTcp(ImageElementsTcp.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
-						new ImageTcp(ImageElementsTcp.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
-						new ImageTcp(ImageElementsTcp.SEGMENTO2, {"x":150, "y":100}, {"title":""}, 155, 155)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
+						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
+						new ImageHost(ImageElements.SEG2TCP, {"x":150, "y":120}, {"title":""}, 165, 100, 200)],
 
 	"server":[],
 	"router": TcpConf.router,
@@ -2837,7 +2534,7 @@ var TcpConf6 = {
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
 	"text":[],
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO2, {"x":150, "y":100}, {"title":""}, 155, 155)],
+	"img": [new ImageHost(ImageElements.SEG2TCP, {"x":150, "y":100}, {"title":""}, 165, 100, 200)],
 }
 
 var TcpConf7 = {
@@ -2846,13 +2543,13 @@ var TcpConf7 = {
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
 	"text":[],
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO3, {"x":850, "y":320}, {"title":""}, 50, 50)],
+	"img": [new ImageHost(ImageElements.SEG3TCP, {"x":850, "y":320}, {"title":""}, 50, 50, 200)],
 }
 
 var TcpConf8 = {
-	"hosts": [new ImageTcp(ImageElementsTcp.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
-						new ImageTcp(ImageElementsTcp.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
-						new ImageTcp(ImageElementsTcp.SEGMENTO3, {"x":850, "y":100}, {"title":""}, 155, 155)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
+						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
+						new ImageHost(ImageElements.SEG3TCP, {"x":850, "y":120}, {"title":""}, 165, 100, 200)],
 	"server":[],
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
@@ -2863,7 +2560,7 @@ var TcpConf9 = {
 	"hosts": TcpConf.hosts,
 	"router": TcpConf.router,
 	"paths": TcpConf.paths,
-	"img": [new ImageTcp(ImageElementsTcp.SEGMENTO3, {"x":850, "y":100}, {"title":""}, 155, 155)],
+	"img": [new ImageHost(ImageElements.SEG3TCP, {"x":850, "y":100}, {"title":""}, 165, 100, 200)],
 }
 
 var TcpAnimation = function(animationConf, msgToShow, bgClear, persistent, next) {
@@ -2871,6 +2568,7 @@ var TcpAnimation = function(animationConf, msgToShow, bgClear, persistent, next)
 	this.hosts = animationConf.hosts;
 	this.router = animationConf.router;
 	this.paths = animationConf.paths;
+	this.img = animationConf.img;
 	this.prototype.bgClear = (bgClear) ? bgClear : false;
 	this.prototype.next = (next) ? next : false;
 	this.prototype.persistent = (persistent) ? persistent : true;
@@ -2889,6 +2587,9 @@ TcpAnimation.prototype.render = function(ctx) {
 	//rotiadores
 	for (var i = 0; i < this.router.length; i++) {
 		this.router[i].drawImage(ctx);
+	}
+	if (this.img){
+		this.img[0].drawImage(ctx);
 	}
 };
 
@@ -2918,149 +2619,10 @@ TcpAnimation.prototype.drawPath = function(ctx, coord) {
 
 //Ethernet Animation
 
-ImageElementsEthernet = Object.freeze({
-	"HOST" : { name:"host", dx: 0, textDy: 25 },
-	"PACK" : { name:"pack", dx: 100},
-	"GARBE": { name: "garbe", dx: 300},
-	"BLACK": { name: "black", dx: 200},
-	"WHITE": { name: "white", dx: 400},
-	"SHINE" : { name: "shine", dx: 1200 }
-});
-
-function ImageEthernet(imgElement, coord, message, dWidth, dHeight) {
-	this.sX = (imgElement) ? imgElement.dx : 0;
-	//TODO renomear essas variaveis para algo mais legivel!
-	this.sY = 0;
-	this.sWidth = 100;
-	this.sHeight = 100;
-	this.dX = (coord) ? coord.x : 0;
-	this.dY = (coord) ? coord.y: 135;
-	this.dWidth = dWidth;
-	this.dHeight = dHeight;
-	this.velocityX = 0;
-	this.img = new Image();
-	this.img.src = "../../img/ethernet.png";
-	this.opacity = 0;
-	this.imgElement = imgElement;
-	this.rotate = (coord.rotate) ? coord.rotate : 0;
-
-	this.title = (message) ? message.title: undefined;
-	this.subtitle = (message) ? message.subtitle : undefined;
-
-	//FIXME construtor não seta o valor
-	__construct = function() {
-		//this.img.src = "img/elements.png";
-	}();
-
-};
-
-ImageEthernet.prototype.setDx = function(dX) {
-	this.dX = dX;
-};
-
-ImageEthernet.prototype.setDy = function(dY) {
-	this.dY = dY;
-};
-
-ImageEthernet.prototype.getContext = function() {
-	return this.context;
-};
-
-ImageEthernet.prototype.getImg = function() {
-	return this.img;
-};
-
-ImageEthernet.prototype.getPosxText = function() {
-	return this.sWidth / 2 + this.dX;
-};
-
-ImageEthernet.prototype.getPosyText = function() {
-	return this.dY + this.sHeight + this.imgElement.textDy;
-};
-
-ImageEthernet.prototype.getPosyTextSubtitle = function() {
-	return this.getPosyText() + 20;
-};
-
-ImageEthernet.prototype.getDx = function() {
-	return this.dX;
-};
-
-ImageEthernet.prototype.getDy = function() {
-	return this.dY;
-};
-
-ImageEthernet.prototype.setSx = function(sX) {
-	this.sX = sX;
-};
-
-ImageEthernet.prototype.setSy = function(sY) {
-	this.sY = sY;
-};
-
-ImageEthernet.prototype.drawText = function(ctx, colorText) {
-	//settings
-	ctx.save();
-
-	ctx.font = "bold 15pt Arial";
-	if(this.imgElement.text) {
-		ctx.font = this.imgElement.text;
-	}
-	ctx.textAlign = 'center';
-	ctx.textBaseLine = 'top';
-
-	if(colorText) {
-		ctx.fillStyle = colorText;
-	}
-
-	if (this.title) {
-		ctx.fillText(this.title, this.getPosxText(), this.getPosyText(), 300);
-	}
-
-	if (this.subtitle) {
-		ctx.font = "13pt Arial";
-		ctx.fillText(this.subtitle, this.getPosxText(), this.getPosyTextSubtitle(), 300);
-	}
-
-	ctx.restore();
-
-};
-
-ImageEthernet.prototype.drawImage = function(ctx, colorText, scale) {
-	var color = "black";
-	//desenha imagem
-	ctx.save();
-
-	if(scale) {
-		ctx.translate(scale, scale);
-	}
-
-	ctx.drawImage(this.img, this.sX, this.sY, this.sWidth, this.sHeight, this.dX, this.dY, this.dWidth, this.dHeight);
-
-	//desenha o texto
-
-
-	if(colorText) {
-		color = colorText;
-	}
-
-	this.drawText(ctx, color);
-
-	ctx.restore();
-
-};
-
-ImageEthernet.prototype.updateImage = function() {
-	opacity += 1;
-	velocityX += Math.random() * 0.1 * (55 - dWidth);
-	dWidth += velocityX;a
-	dHeight += velocityX;
-};
-
 var EthernetConf = {
-	"hosts": [new ImageEthernet(ImageElementsEthernet.HOST, {"x":200, "y":200}, {"title":""}, 100, 100),
-              new ImageEthernet(ImageElementsEthernet.HOST, {"x":500, "y":200}, {"title":""}, 100, 100),
-				new ImageEthernet(ImageElementsEthernet.HOST, {"x":800, "y":200}, {"title":""}, 100, 100)],
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":200, "y":200}, {"title":""}),
+              new ImageHost(ImageElements.HOST, {"x":500, "y":200}, {"title":""}),
+				new ImageHost(ImageElements.HOST, {"x":800, "y":200}, {"title":""})],
 
 	"paths": [{"sx":235, "sy":400, "dx":845, "dy":400}, //linha reta
 				    {"sx":240, "sy":280, "dx":240, "dy":400},
@@ -3077,56 +2639,54 @@ var EthernetConf2 = {
 		"hosts": EthernetConf.hosts,
 		"paths": EthernetConf.paths,
 		"text": EthernetConf.text,
-		"img": [new ImageEthernet(ImageElementsEthernet.BLACK, {"x":300, "y":220}, {"title":""}, 100, 100),
-						new ImageEthernet(ImageElementsEthernet.WHITE, {"x":300, "y":240}, {"title":""}, 100, 55),
-						new ImageEthernet(ImageElementsEthernet.PACK, {"x":300, "y":245}, {"title":""}, 50, 50)],
+		"img": [new ImageHost(ImageElements.PACK, {"x":300, "y":220}, {"title":""})],
 }
 
 var EthernetConf3 = {
 		"hosts": EthernetConf.hosts,
 		"paths": EthernetConf.paths,
 		"text": EthernetConf.text,
-		"img": [new ImageEthernet(ImageElementsEthernet.SHINE, {"x":250, "y":290}, {"title":""}, 40, 40),
-						new ImageEthernet(ImageElementsEthernet.SHINE, {"x":550, "y":290}, {"title":""}, 40, 40),
-						new ImageEthernet(ImageElementsEthernet.SHINE, {"x":850, "y":290}, {"title":""}, 40, 40)],
+		"img": [new ImageHost(ImageElements.SHINE, {"x":250, "y":290}, {"title":""}, 40, 40),
+						new ImageHost(ImageElements.SHINE, {"x":550, "y":290}, {"title":""}, 40, 40),
+						new ImageHost(ImageElements.SHINE, {"x":850, "y":290}, {"title":""}, 40, 40)],
 }
 
 var EthernetTranConf = {
 	"hosts": EthernetConf.hosts,
 	"paths": EthernetConf.paths,
 	"text": EthernetConf.text,
-	"img": [new ImageEthernet(ImageElementsEthernet.BLACK, {"x":450, "y":381}, {"title":""}, 20, 40),
-					new ImageEthernet(ImageElementsEthernet.BLACK, {"x":650, "y":381}, {"title":""}, 20, 40)],
+	"img": [new ImageHost(ImageElements.TRAN, {"x":400, "y":349}, {"title":""}),
+					new ImageHost(ImageElements.TRAN, {"x":600, "y":349}, {"title":""})],
 }
 
 var EthernetTranConf2 = {
 	"hosts": EthernetConf.hosts,
 	"paths": EthernetConf.paths,
 	"text": EthernetConf.text,
-	"img": [new ImageEthernet(ImageElementsEthernet.BLACK, {"x":235, "y":381}, {"title":""}, 20, 40)],
+	"img": [new ImageHost(ImageElements.TRAN, {"x":197, "y":349}, {"title":""})],
 }
 
 	var EthernetTranConf3 = {
 		"hosts": EthernetConf.hosts,
 		"paths": EthernetConf.paths,
 		"text": EthernetConf.text,
-		"img": [new ImageEthernet(ImageElementsEthernet.BLACK, {"x":380, "y":381}, {"title":""}, 20, 40),
-						new ImageEthernet(ImageElementsEthernet.BLACK, {"x":670, "y":381}, {"title":""}, 20, 40)],
+		"img": [new ImageHost(ImageElements.TRAN, {"x":330, "y":349}, {"title":""}),
+						new ImageHost(ImageElements.TRAN, {"x":620, "y":349}, {"title":""})],
 	}
 
 var EthernetGarbeConf = {
 	"hosts": EthernetConf.hosts,
 	"paths": EthernetConf.paths,
 	"text": EthernetConf.text,
-	"img": [new ImageEthernet(ImageElementsEthernet.GARBE, {"x":350, "y":420}, {"title":""}, 100, 100),
-					new ImageEthernet(ImageElementsEthernet.GARBE, {"x":630, "y":420}, {"title":""}, 100, 100)],
+	"img": [new ImageHost(ImageElements.GARBE, {"x":350, "y":420}, {"title":""}),
+					new ImageHost(ImageElements.GARBE, {"x":630, "y":420}, {"title":""})],
 }
 
 var EthernetGarbeConf2 = {
 	"hosts": EthernetConf.hosts,
 	"paths": EthernetConf.paths,
 	"text": EthernetConf.text,
-	"img": [new ImageEthernet(ImageElementsEthernet.GARBE, {"x":720, "y":300}, {"title":""}, 100, 100)],
+	"img": [new ImageHost(ImageElements.GARBE, {"x":720, "y":300}, {"title":""})],
 }
 
 

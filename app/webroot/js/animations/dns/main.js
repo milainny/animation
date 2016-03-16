@@ -10,7 +10,7 @@ init = function() {
 //	//mensagens de introdução
 	animator.setSteps(new EmptyAnimation(msg.dns.intro2));
 
-	//	blocks.setAtributos('ea', msg.dns.intro3); //EmptyAnimation
+	//	blocks.setAttributes('ea', msg.dns.intro3); //EmptyAnimation
 		animator.setSteps(new HtmlMessageAnimation([{ //HtmlMessageAnimation
 			"id": "text3",
 			"dx": 210,
@@ -24,39 +24,39 @@ init = function() {
 //	//iterações
   animator.setSteps(new EmptyAnimation(msg.dns.dns1));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":250, "sy":370, "dx":555, "dy":370}, msg.dns.dns1,true);
+		blocks.setAttributes({"sx":250, "sy":370, "dx":555, "dy":370}, msg.dns.dns1,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new DnsMessageAnimation(msg.dns.dnsMessage));
 	animator.setSteps(new EmptyAnimation(msg.dns.dns2));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":555, "sy":370 , "dx":950, "dy":150, "rotate": -32}, msg.dns.dns2,true);
+		blocks.setAttributes({"sx":555, "sy":370 , "dx":950, "dy":150, "rotate": -32}, msg.dns.dns2,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new RootServerAnimation({"x":900, "y":100} , {"title": msg.rootServer}, msg.dns.rootServer, colors.blue));
 	animator.setSteps(new EmptyAnimation(msg.dns.dns3));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":950, "sy":150, "dx": 555, "dy": 370, "rotate": -32}, msg.dns.dns3,true);
+		blocks.setAttributes({"sx":950, "sy":150, "dx": 555, "dy": 370, "rotate": -32}, msg.dns.dns3,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new EmptyAnimation(msg.dns.dns4));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":570, "sy":370, "dx": 950, "dy": 370}, msg.dns.dns4,true);
+		blocks.setAttributes({"sx":570, "sy":370, "dx": 950, "dy": 370}, msg.dns.dns4,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new RootServerAnimation({"x":900, "y":320}, {"title":msg.tldServer }, msg.dns.tldServer, colors.orange));
 	animator.setSteps(new EmptyAnimation(msg.dns.dns5));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":950, "sy":370, "dx": 570, "dy": 370}, msg.dns.dns5,true);
+		blocks.setAttributes({"sx":950, "sy":370, "dx": 570, "dy": 370}, msg.dns.dns5,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new EmptyAnimation(msg.dns.dns6));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":555, "sy":370, "dx": 950, "dy": 600, "rotate": 32}, msg.dns.dns6,true);
+		blocks.setAttributes({"sx":555, "sy":370, "dx": 950, "dy": 600, "rotate": 32}, msg.dns.dns6,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new RootServerAnimation({"x":900, "y":540}, {"title":msg.authorityServer}, msg.dns.authorityServer, colors.purple));
 	animator.setSteps(new EmptyAnimation(msg.dns.dns7));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":950, "sy":600, "dx": 555, "dy": 370, "rotate": 32}, msg.dns.dns7,true);
+		blocks.setAttributes({"sx":950, "sy":600, "dx": 555, "dy": 370, "rotate": 32}, msg.dns.dns7,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new EmptyAnimation(msg.dns.dns8));
 	blocks = new BlockAnimation(1,1);
-		blocks.setAtributos({"sx":555, "sy":370 , "dx":250, "dy":370}, msg.dns.dns8,true);
+		blocks.setAttributes({"sx":555, "sy":370 , "dx":250, "dy":370}, msg.dns.dns8,true);
 	animator.setSteps(blocks);
 	animator.setSteps(new EndAnimation(msg.dns.dns9 + APP.CONF.finishButton));
 
