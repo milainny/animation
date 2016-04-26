@@ -136,7 +136,7 @@ canvas {
 	margin-left: 251px;
 	z-index: 23;
 	margin-top: -80px;
-	overflow-y: auto;
+/*	overflow-y: auto;*/
 }
 
 #wrapperMsg p {
@@ -152,7 +152,7 @@ canvas {
 	margin-top: 130px;
 	margin-left: 50px;
 	z-index: 10;
-	opacity: 1;
+/*	opacity: 1;*/
 	width:500px;
 /* 	border:solid 1px; */
 }

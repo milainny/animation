@@ -28,22 +28,33 @@ ImageElements = Object.freeze({
 	"ARROW3" : {name: "arrow2", dx: 3200},
 	"PACK" : {name: "pack", dx: 1900},
 	"SHINE" : {name: "shine", dx: 1800},
+	"APPLI" : {name: "appli", dx: 3300},
+	"TRANS" : {name: "trans", dx: 3400},
+	"NET" : {name: "net", dx: 3500},
+	"DATA" : {name: "data", dx: 3600},
+	"PHYS" : {name: "phys", dx: 3700},
+	"FRAME1" : {name: "frame1", dx: 1101},
+	"FRAME2" : {name: "frame2", dx: 1200},
+	"FRAME3" : {name: "frame3", dx: 1300},
+	"FRAME4" : {name: "frame4", dx: 1400},
+	"FRAME5" : {name: "frame5", dx: 1500}
 });
 
 //Elementos da página
 var img = new Image();
 img.src = "../../img/layout_grid.gif";
 
+//variaveis auxilares de blocos
 var back = 0;
 var bloco = 0;
 var stp = 0;
 var k = 0;
 
+//variaveis auxiliares de audio
 var currentPlayer;
 var thisSound;
-
 var sound = new Audio("");
-var aud = 1;
+var aud = 0;
 
 /*
 * Animator
@@ -135,11 +146,11 @@ Animator.prototype.speak = function(){
 };
 
 Animator.prototype.backStep = function(){
-	if (this.backSteps.length > 1){
-		this.steps = buildStack(this.backSteps, this.steps);
-		this.audio = buildStack(this.backAudios, this.audio);
-		this.nextStep();
-	}
+		if (this.backSteps.length > 1){
+			this.steps = buildStack(this.backSteps, this.steps);
+			this.audio = buildStack(this.backAudios, this.audio);
+			this.nextStep();
+		}
 };
 
 
@@ -149,60 +160,54 @@ Animator.prototype.blockStep = function(newSteps){
 };
 
 Animator.prototype.nextStep = function() {
-	sound.pause();
-	//só vai deixar clicar no botao e executar uma por vez
-	console.log(this.getStatus());
+	  sound.pause();
+	  //só vai deixar clicar no botao e executar uma por vez
+	  console.log(this.getStatus());
 
-	//REMOVE MENSAGENS DA TELA
-	APP.removeMessages();
-	var prox = false;
+	  //REMOVE MENSAGENS DA TELA
+	  APP.removeMessages();
+	  var prox = false;
 
-	if (this.getStatus() == AnimationStatus.CONTINUE) {
-
-		var animation = this.steps.shift();
-
-
-		if ((animation instanceof BlockAnimation) || (animation instanceof BlockBackground)){
-			if(!back){
-				k = animation.stp;
-
-				if (animation instanceof BlockBackground){
+	  if (this.getStatus() == AnimationStatus.CONTINUE) {
+			var animation = this.steps.shift();
+			if ((animation instanceof BlockAnimation) || (animation instanceof BlockBackground)){
+				if(!back){
+					k = animation.stp;
+					if (animation instanceof BlockBackground){
+						k--;
+					}
+				}else{
+					if (animation instanceof BlockBackground){
+						k = 1;
+					}
+				}
+			}else{
+				if (k == 0){
+					var s = this.audio.shift();
+					new som(s); //Load a new sound
+					thisSound = s;
+					this.backAudios.push(s);
+				}else{
 					k--;
 				}
-			}else{
-				if (animation instanceof BlockBackground){
-					k = 1;
-				}
 			}
-		}else{
-			if (k == 0){
-				var s = this.audio.shift();
-				new som(s); //Load a new sound
-				thisSound = s;
-				this.backAudios.push(s);
-			}else{
-				k--;
-			}
-		}
-		// Adiciona os stp quando é um bloco de animação
-		if ((animation instanceof BlockAnimation) || (animation instanceof BlockBackground)){
-			if (back != 1){
-			animation.addSteps();
-			stp = animation.stp;
-			bloco = 1
-			}else{
-				if (animation instanceof BlockBackground){
+			// Adiciona os stp quando é um bloco de animação
+			if ((animation instanceof BlockAnimation) || (animation instanceof BlockBackground)){
+				if (back != 1){
 					animation.addSteps();
-			stp = animation.stp;
-			bloco = 1
+					stp = animation.stp;
+					bloco = 1
+				}else{
+					if (animation instanceof BlockBackground){
+						animation.addSteps();
+						stp = animation.stp;
+						bloco = 1
+					}
 				}
 			}
-		}
-	//	if (!(animation instanceof MessageAnimation)){
-		if ((stp == 0) || (bloco)){
+			if ((stp == 0) || (bloco)){
 				this.backSteps.push(animation);
 				bloco = 0;
-
 				// Trata a volta que é precisa voltar dois para o BlockAnimation
 				if ((animation instanceof BlockAnimation) || (animation instanceof BlockBackground)){
 					if (back && animation instanceof BlockAnimation ){
@@ -211,33 +216,21 @@ Animator.prototype.nextStep = function() {
 					if (back && animation instanceof BlockBackground){
 						this.clearAnimation(this.getContextBg());
 					}
-//					if (back){
-						//this.steps = buildStack(this.backSteps, this.steps);
-						//if (animation instanceof BlockBackground){
-							//this.clearAnimation(this.getContextBg());
-
-						//}
-						//prox = true;
-					//}
 					back = 0;
 					this.nextStep();
-
 				}
-		}else if(stp > 0){
-			stp--;
-		}
-
-		var that = this;
-
-//		TODO melhorar a parte de esconder o conteudo HTML
-		if(!animation.prototype.isHtmlContentVisible()) {
-			document.getElementById("htmlContent").style.opacity = 0; //TODO arrumar aqui
-		}
-		back = 0;
-		//troca o texto
-		if(animation.prototype.message) {
-
-			this.changeText(animation.prototype.message);
+			}else if(stp > 0){
+				stp--;
+			}
+			var that = this;
+			//		TODO melhorar a parte de esconder o conteudo HTML
+			if(!animation.prototype.isHtmlContentVisible()) {
+				document.getElementById("htmlContent").style.opacity = 0; //TODO arrumar aqui
+			}
+			back = 0;
+			//troca o texto
+			if(animation.prototype.message) {
+				this.changeText(animation.prototype.message);
 
 			//checa o fim da animação
 			if(animation instanceof EndAnimation || animation == null) {
@@ -261,7 +254,7 @@ Animator.prototype.nextStep = function() {
 
 		//seta animador pra bloquear mais animações
 		this.stop();
-
+		console.log(this.getStatus());
 		//anima
 		if(animation instanceof Array) {
 			animation.forEach(function(item) {
@@ -273,7 +266,7 @@ Animator.prototype.nextStep = function() {
 		}
 
 		//this.animate(this.steps.pop());
-	}
+}
 	if (prox){
 		this.nextStep();
 	}
@@ -293,10 +286,11 @@ Animator.prototype.animate = function(animation) {
 	}
 	//console.log("clear");
 	//update
+	animator.stop();
 	if (animation.update) {
-		//console.log(typeof animation.update);
 		animation.update();
 	} else {
+		animator.go();
 		animation.prototype.stop();
 	}
 	//render
@@ -459,7 +453,7 @@ var EmptyAnimation = function(msg, isHtmlVisible, htmlContent, next) {
 
 
 var Message = function(coord){
-	this.speed = 3;
+	this.speed = 2;
 	this.width = 20;
 	this.height = 10;
 	this.x = coord.sx;
@@ -652,7 +646,7 @@ ImageHost.prototype.updateImage = function() {
 	dHeight += velocityX;
 };
 
-var MessageAnimation = function(coord, msg, next, noAlphaEnd) {
+var MessageAnimation = function(coord, msg, next, innerSound, noAlphaEnd) {
 	this.prototype = new Animation(msg);
 	this.message = new Message(coord);
 	this.prototype.persistent = false;
@@ -660,6 +654,12 @@ var MessageAnimation = function(coord, msg, next, noAlphaEnd) {
 	this.rotate = (coord) ? coord.rotate : 0;
 	this.prototype.next = (next) ? true : false;
 	this.noAlphaEnd = (noAlphaEnd) ? noAlphaEnd : false;
+	this.innerSound = innerSound;
+	if (this.innerSound){
+	var s = this.innerSound;
+	new som(s); //Load a new sound
+	thisSound = s;
+	}
 };
 
 
@@ -677,7 +677,6 @@ ctx.restore();
 };
 
 MessageAnimation.prototype.update = function() {
-
 if(this.message.moves > 0 ) {
 	//vai decrementando os movimentos
 	this.message.moves--;
@@ -1927,13 +1926,19 @@ AlohaAnimation.prototype.drawText = function(ctx, text) {
 	ctx.restore();
 };
 
-var MessageAnimationImg = function(pos, next, imgs) {
+var MessageAnimationImg = function(pos, next, imgs, innerSound) {
 this.prototype = new Animation();
 this.msgs = this.buildMsgs(pos);
 this.prototype.persistent = false;
 this.opacity = 0.5;
 this.img = imgs.img;
 this.prototype.next = (next) ? true : false;
+this.innerSound = innerSound;
+if (this.innerSound){
+	var s = this.innerSound;
+	new som(s); //Load a new sound
+	thisSound = s;
+}
 };
 
 MessageAnimationImg.prototype.buildMsgs = function(pos) {
@@ -2471,7 +2476,7 @@ TwhsDecreaseRight.prototype.drawText = function(ctx, text) {
 //tcp Animation
 
 var TcpConf = {
-	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"}),
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Host A"}),
 						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"})],
 
 	"router": [new ImageHost(ImageElements.ROUTER, {"x":400, "y":330}, {"title":""},80,80),
@@ -2517,7 +2522,7 @@ var TcpConf4 = {
 }
 
 var TcpConf5 = {
-	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Host A"},100,100),
 						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
 						new ImageHost(ImageElements.SEG2TCP, {"x":150, "y":120}, {"title":""}, 165, 100, 200)],
 
@@ -2547,7 +2552,7 @@ var TcpConf7 = {
 }
 
 var TcpConf8 = {
-	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Hosta A"},100,100),
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":850, "y":320}, {"title":"Host A"},100,100),
 						new ImageHost(ImageElements.HOST, {"x":150, "y":320}, {"title":"Host B"},100,100),
 						new ImageHost(ImageElements.SEG3TCP, {"x":850, "y":120}, {"title":""}, 165, 100, 200)],
 	"server":[],
@@ -2950,6 +2955,540 @@ if(end) {
 }
 };
 
+// HybridModel Animation
+
+var HybridConf = {
+	"hosts": [new ImageHost(ImageElements.HOST, {"x":150, "y":400}, {"title":""})],
+
+	"server": [new ImageHost(ImageElements.SERVER, {"x":850, "y":400}, {"title":""})],
+
+	"router": [new ImageHost(ImageElements.ROUTER, {"x":400, "y":410}, {"title":""},80,80),
+						 new ImageHost(ImageElements.ROUTER, {"x":600, "y":410}, {"title":""},80,80)],
+
+	"paths": [{"sx":250, "sy":450, "dx":450, "dy":450},
+				    {"sx":460, "sy":450, "dx":650, "dy":450},
+				    {"sx":650, "sy":450, "dx":870, "dy":450},
+			     ],
+}
+
+var HybridConf2 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": [new ImageHost(ImageElements.APPLI, {"x": 150, "y": 100}, {"title": ""}),
+            new ImageHost(ImageElements.TRANS, {"x": 150, "y": 150}, {"title": ""}),
+					  new ImageHost(ImageElements.NET, {"x": 150, "y": 200}, {"title": ""}),
+					  new ImageHost(ImageElements.DATA, {"x": 150, "y": 250}, {"title": ""}),
+					  new ImageHost(ImageElements.PHYS, {"x": 150, "y": 300}, {"title": ""}),
+						new ImageHost(ImageElements.APPLI, {"x": 850, "y": 100}, {"title": ""}),
+					  new ImageHost(ImageElements.TRANS, {"x": 850, "y": 150}, {"title": ""}),
+						new ImageHost(ImageElements.NET, {"x": 850, "y": 200}, {"title": ""}),
+						new ImageHost(ImageElements.DATA, {"x": 850, "y": 250}, {"title": ""}),
+						new ImageHost(ImageElements.PHYS, {"x": 850, "y": 300}, {"title": ""}),
+						new ImageHost(ImageElements.NET, {"x": 400, "y": 200}, {"title": ""}),
+						new ImageHost(ImageElements.DATA, {"x": 400, "y": 250}, {"title": ""}),
+						new ImageHost(ImageElements.PHYS, {"x": 400, "y": 300}, {"title": ""}),
+						new ImageHost(ImageElements.NET, {"x": 600, "y": 200}, {"title": ""}),
+						new ImageHost(ImageElements.DATA, {"x": 600, "y": 250}, {"title": ""}),
+						new ImageHost(ImageElements.PHYS, {"x": 600, "y": 300}, {"title": ""})]
+}
+
+var HybridConf3 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+	"arrow": [new ImageHost(ImageElements.ARROW2, {"x": 235, "y": 115}, {"title": ""}, 80, 80),
+            new ImageHost(ImageElements.LINE, {"x": 315, "y": 115}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 395, "y": 115}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 475, "y": 115}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 555, "y": 115}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 635, "y": 115}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 715, "y": 115}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 750, "y": 115}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.ARROW3, {"x": 822, "y": 110}, {"title": ""}, 77, 77)]
+}
+
+var HybridConf4 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+	"arrow": [new ImageHost(ImageElements.ARROW2, {"x": 235, "y": 165}, {"title": ""}, 80, 80),
+            new ImageHost(ImageElements.LINE, {"x": 315, "y": 165}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 395, "y": 165}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 475, "y": 165}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 555, "y": 165}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 635, "y": 165}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.LINE, {"x": 715, "y": 165}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 750, "y": 165}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.ARROW3, {"x": 822, "y": 160}, {"title": ""}, 77, 77)]
+}
+
+var HybridConf5 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+	"arrow": [new ImageHost(ImageElements.ARROW2, {"x": 235, "y": 215}, {"title": ""}, 80, 80),
+            new ImageHost(ImageElements.LINE, {"x": 295, "y": 215}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 370, "y": 210}, {"title": ""}, 77, 77),
+						new ImageHost(ImageElements.ARROW2, {"x": 490, "y": 215}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 565, "y": 210}, {"title": ""}, 77, 77),
+					  new ImageHost(ImageElements.ARROW2, {"x": 680, "y": 215}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 750, "y": 215}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.ARROW3, {"x": 822, "y": 210}, {"title": ""}, 77, 77)]
+}
+var HybridConf6 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+	"arrow": [new ImageHost(ImageElements.ARROW2, {"x": 235, "y": 265}, {"title": ""}, 80, 80),
+            new ImageHost(ImageElements.LINE, {"x": 295, "y": 265}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 370, "y": 260}, {"title": ""}, 77, 77),
+						new ImageHost(ImageElements.ARROW2, {"x": 490, "y": 265}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 565, "y": 260}, {"title": ""}, 77, 77),
+					  new ImageHost(ImageElements.ARROW2, {"x": 680, "y": 265}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 750, "y": 265}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.ARROW3, {"x": 822, "y": 260}, {"title": ""}, 77, 77)]
+}
+
+var HybridConf7 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+	"arrow": [new ImageHost(ImageElements.ARROW2, {"x": 235, "y": 315}, {"title": ""}, 80, 80),
+            new ImageHost(ImageElements.LINE, {"x": 295, "y": 315}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 370, "y": 310}, {"title": ""}, 77, 77),
+						new ImageHost(ImageElements.ARROW2, {"x": 490, "y": 315}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.ARROW3, {"x": 565, "y": 310}, {"title": ""}, 77, 77),
+					  new ImageHost(ImageElements.ARROW2, {"x": 680, "y": 315}, {"title": ""}, 80, 80),
+						new ImageHost(ImageElements.LINE, {"x": 750, "y": 315}, {"title": ""}, 80, 80),
+					  new ImageHost(ImageElements.ARROW3, {"x": 822, "y": 310}, {"title": ""}, 77, 77)]
+}
+
+var HybridConf8 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": [new ImageHost(ImageElements.APPLI, {"x": 150, "y": 100}, {"title": ""}),
+            new ImageHost(ImageElements.TRANS, {"x": 150, "y": 150}, {"title": ""}),
+					  new ImageHost(ImageElements.NET, {"x": 150, "y": 200}, {"title": ""}),
+					  new ImageHost(ImageElements.DATA, {"x": 150, "y": 250}, {"title": ""}),
+					  new ImageHost(ImageElements.PHYS, {"x": 150, "y": 300}, {"title": ""}),
+						new ImageHost(ImageElements.APPLI, {"x": 850, "y": 100}, {"title": ""}),
+					  new ImageHost(ImageElements.TRANS, {"x": 850, "y": 150}, {"title": ""}),
+						new ImageHost(ImageElements.NET, {"x": 850, "y": 200}, {"title": ""}),
+						new ImageHost(ImageElements.DATA, {"x": 850, "y": 250}, {"title": ""}),
+						new ImageHost(ImageElements.PHYS, {"x": 850, "y": 300}, {"title": ""})]
+}
+
+var HybridConf9 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME1, {"x": 260, "y": 105}, {"title": ""})]
+}
+
+
+var HybridConf10 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME2, {"x": 260, "y": 155}, {"title": ""})]
+}
+
+var HybridConf11 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 260, "y": 205}, {"title": ""})]
+}
+
+var HybridConf12 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 260, "y": 255}, {"title": ""},100, 100, 101)]
+}
+
+var HybridConf13 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 260, "y": 305}, {"title": ""},100, 100, 101)]
+}
+
+var HybridConf14 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf8.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 250, "y": 430}, {"title": ""},40, 40, 101)]
+}
+
+var HybridConf15 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 290, "y": 305}, {"title": ""},100, 100, 101)]
+}
+
+var HybridConf16 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 315, "y": 255}, {"title": ""})]
+}
+
+
+var HybridConf17 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 315, "y": 205}, {"title": ""})]
+}
+
+var HybridConf18 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 500, "y": 205}, {"title": ""})]
+}
+
+var HybridConf19 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 500, "y": 255}, {"title": ""})]
+}
+
+var HybridConf20 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 500, "y": 305}, {"title": ""})]
+}
+
+
+var HybridConf21 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 450, "y": 430}, {"title": ""},40, 40, 101)]
+}
+
+var HybridConf22 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 500, "y": 255}, {"title": ""})]
+}
+
+var HybridConf23 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 710, "y": 205}, {"title": ""})]
+}
+
+var HybridConf24 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 710, "y": 255}, {"title": ""})]
+}
+
+var HybridConf25 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 640, "y": 430}, {"title": ""},40, 40, 101)]
+}
+
+var HybridConf26 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME4, {"x": 740, "y": 305}, {"title": ""})]
+}
+
+var HybridConf27 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME3, {"x": 750, "y": 255}, {"title": ""})]
+}
+
+var HybridConf28 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME2, {"x": 760, "y": 205}, {"title": ""})]
+}
+
+var HybridConf29 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME1, {"x": 770, "y": 155}, {"title": ""})]
+}
+
+var HybridConf30 = {
+	"hosts": HybridConf.hosts,
+	"server": HybridConf.server,
+	"router": HybridConf.router,
+	"paths" : HybridConf.paths,
+	"layers": HybridConf2.layers,
+  "frames": [new ImageHost(ImageElements.FRAME5, {"x": 780, "y": 105}, {"title": ""})]
+}
+
+var HybridModelAnimation = function(animationConf, msgToShow, bgClear, next) {
+	this.prototype = new Animation(msgToShow);
+	this.hosts = animationConf.hosts;
+	this.server = animationConf.server;
+	this.paths = animationConf.paths;
+	this.router = animationConf.router;
+	this.layers = animationConf.layers;
+	this.arrow = animationConf.arrow;
+	this.frames = animationConf.frames;
+	this.prototype.bgClear = (bgClear) ? true : false;
+	this.prototype.next = (next) ? next : false;
+	//AlohaAnimationTransition.persistent = false;
+};
+
+HybridModelAnimation.prototype.render = function(ctx) {
+	//opacity effect
+	ctx.globalAlpha = this.prototype.opacity;
+	//caminhos
+	this.drawPaths(ctx, this.paths);
+	//roteadores
+	for (var i = 0; i < this.hosts.length; i++) {
+		this.hosts[i].drawImage(ctx);
+	}
+	//servers
+	for (var i = 0; i < this.server.length; i++) {
+		this.server[i].drawImage(ctx);
+	}
+
+	//routers
+	for (var i = 0; i < this.router.length; i++) {
+		this.router[i].drawImage(ctx);
+	}
+	//layers
+	if (this.layers){
+		for (var i = 0; i < this.layers.length; i++) {
+			this.layers[i].drawImage(ctx);
+		}
+	}
+
+	//arrow
+	if (this.arrow){
+		for (var i = 0; i < this.arrow.length; i++) {
+			this.arrow[i].drawImage(ctx);
+		}
+	}
+		//frames
+		if (this.frames){
+			for (var i = 0; i < this.frames.length; i++) {
+				this.frames[i].drawImage(ctx);
+			}
+		}
+};
+
+HybridModelAnimation.prototype.drawPaths = function(ctx, paths) {
+	//caminhos
+	for (var i = 0; i < paths.length; i++) {
+		this.drawPath(ctx, paths[i]);
+	}
+};
+
+HybridModelAnimation.prototype.update = function() {
+	if (this.prototype.opacity <= 1) {
+		this.prototype.opacity += 0.1;
+	} else {
+		this.prototype.stop();
+	}
+};
+
+HybridModelAnimation.prototype.drawPath = function(ctx, coord) {
+	ctx.beginPath();
+	ctx.lineWidth=(coord.line) ? (coord.line) : "10";
+	ctx.strokeStyle= (coord.color) ? coord.color : "#999"; // Green path
+	ctx.moveTo(coord.sx, coord.sy);
+	ctx.lineTo(coord.dx,coord.dy);
+	ctx.stroke(); // Draw it
+};
+
+HybridModelAnimation.prototype.drawText = function(ctx, text) {
+	ctx.save();
+	ctx.font = APP.CONF.getTextStyle(text.style);
+	ctx.fillStyle = (text.color) ? text.color : "#000";
+	ctx.textAlign = 'center';
+	ctx.textBaseLine = 'top';
+	ctx.fillText(text.text, text.coord.x, text.coord.y, 300);
+	ctx.restore();
+};
+
+var Movement = function(animationConf, msg, type, vectorD) {
+	this.prototype = new Animation();
+	this.hosts = animationConf.hosts;
+	this.server = animationConf.server;
+	this.paths = animationConf.paths;
+	this.router = animationConf.router;
+	this.layers = animationConf.layers;
+	this.arrow = animationConf.arrow;
+	this.type = type;
+	this.vectorD = vectorD;
+	this.html = new HtmlContentAnimation(msg);
+	this.seg = animationConf.frames;
+	this.seg[0].setDy(vectorD[1]);
+	this.seg[0].setDx(vectorD[0]);
+	this.prototype.next = true;
+	this.prototype.bgClear = true;
+};
+
+Movement.prototype.render = function(ctx) {
+	//caminhos
+	this.drawPaths(ctx, this.paths);
+	//roteadores
+	for (var i = 0; i < this.hosts.length; i++) {
+		this.hosts[i].drawImage(ctx);
+	}
+	//servers
+	for (var i = 0; i < this.server.length; i++) {
+		this.server[i].drawImage(ctx);
+	}
+
+	//routers
+	for (var i = 0; i < this.router.length; i++) {
+		this.router[i].drawImage(ctx);
+	}
+	//layers
+	if (this.layers){
+		for (var i = 0; i < this.layers.length; i++) {
+			this.layers[i].drawImage(ctx);
+		}
+	}
+
+	//arrow
+	if (this.arrow){
+		for (var i = 0; i < this.arrow.length; i++) {
+			this.arrow[i].drawImage(ctx);
+		}
+	}
+	this.seg[0].drawImage(ctx);
+
+};
+
+Movement.prototype.update = function(ctx) {
+	if (this.type == 1){ //descer
+
+			if (this.seg[0].getDy() < this.vectorD[3]) {
+				this.seg[0].setDy(this.seg[0].getDy() + 2);
+			}else{
+				this.seg[0].setDy(this.vectorD[1]);
+				this.prototype.stop();
+			}
+	}else{
+		if (this.type == 2){ //subir
+
+				if (this.seg[0].getDy() > this.vectorD[3]) {
+					this.seg[0].setDy(this.seg[0].getDy() - 2);
+				}else{
+					this.seg[0].setDy(this.vectorD[1]);
+					this.prototype.stop();
+			}
+
+		}else{
+			if (this.seg[0].getDx() < this.vectorD[2]) {
+				this.seg[0].setDx(this.seg[0].getDx() + 2);
+			}else{
+				this.seg[0].setDx(this.vectorD[0]);
+				this.prototype.stop();
+			}
+
+		}
+	}
+};
+
+Movement.prototype.drawPaths = function(ctx, paths) {
+	//caminhos
+	for (var i = 0; i < paths.length; i++) {
+		this.drawPath(ctx, paths[i]);
+	}
+};
+
+Movement.prototype.drawPath = function(ctx, coord) {
+	ctx.beginPath();
+	ctx.lineWidth=(coord.line) ? (coord.line) : "10";
+	ctx.strokeStyle= (coord.color) ? coord.color : "#999"; // Green path
+	ctx.moveTo(coord.sx, coord.sy);
+	ctx.lineTo(coord.dx,coord.dy);
+	ctx.stroke(); // Draw it
+};
+
+Movement.prototype.drawText = function(ctx, text) {
+	ctx.save();
+	ctx.font = APP.CONF.getTextStyle(text.style);
+	ctx.fillStyle = (text.color) ? text.color : "#000";
+	ctx.textAlign = 'center';
+	ctx.textBaseLine = 'top';
+	ctx.fillText(text.text, text.coord.x, text.coord.y, 300);
+	ctx.restore();
+};
+
+
 
 buildStack = function(backSteps, steps){
 	back = 1;
@@ -3029,6 +3568,7 @@ var BlockAnimation = function(stp, type) {
 	this.coords = [];
 	this.msgs = [];
 	this.nexts = [];
+	this.innerSound = [];
 	this.noAlphaEnds = [];
 };
 
@@ -3046,32 +3586,37 @@ BlockAnimation.prototype.addSteps = function(){
 	var realMsgs = [];
 	var realNexts = [];
 	var realAlpha = [];
+	var realAudio = [];
 	bloco = this.stp;
 	var newSteps = [];
 	while (this.stp > 0){
 		var c = this.coords.shift();
 		var m = this.msgs.shift();
 		var n = this.nexts.shift();
+		var s = this.innerSound.shift();
 		var a = this.noAlphaEnds.shift();
 		if (this.type == 1){
-			newSteps.push(new MessageAnimation(c, m, n, a));
+			newSteps.push(new MessageAnimation(c, m, n, s, a));
 		}else if(this.type == 2){
 			newSteps.push(new MessageAnimation2(c, m, n));
 		}else if(this.type == 3){
-			newSteps.push(new MessageAnimationImg(c, m, n));
+			newSteps.push(new MessageAnimationImg(c, m, n, s));
 		}else if(this.type == 4){
 			newSteps.push(new TwhsIncrease(c, m));
 		}else if(this.type == 5){
 			newSteps.push(new TwhsDecreaseLeft(c, m));
 		}else if(this.type == 6){
 			newSteps.push(new TwhsDecreaseRight(c, m));
-		}else{
+		}else if(this.type == 7){
 			newSteps.push(new MessageAnimationImgAndShine(c, m, n));
+		}else{
+			newSteps.push(new Movement(c,m,n,a));
 		}
 
 		realCoords.push(c);
 		realMsgs.push(m);
 		realNexts.push(n);
+		realAudio.push(s);
 		realAlpha.push(a);
 		this.stp = this.stp -1;
 	}
@@ -3080,6 +3625,7 @@ BlockAnimation.prototype.addSteps = function(){
 	this.coords = realCoords;
 	this.msgs = realMsgs;
 	this.nexts = realNexts;
+	this.innerSound = realAudio;
 	this.noAlphaEnds = realAlpha;
 
 	var oldSteps = animator.getSteps();
@@ -3090,10 +3636,11 @@ BlockAnimation.prototype.addSteps = function(){
 
 };
 
-BlockAnimation.prototype.setAttributes = function(coord, msg, next, noAlphaEnd) {
+BlockAnimation.prototype.setAttributes = function(coord, msg, next, innerSound, noAlphaEnd) {
 	this.coords.push(coord);
 	this.msgs.push(msg);
 	this.nexts.push(next);
+	this.innerSound.push(innerSound);
 	this.noAlphaEnds.push(noAlphaEnd);
 };
 
@@ -3169,6 +3716,9 @@ BlockBackground.prototype.addSteps = function(){
 		if(t == 'eat'){ //EthernetAnimationTransition
 			newSteps.push(new EthernetAnimationTransition(o,m,o2,n));
 		}
+		if(t == 'ha'){ //HybridModelAnimation
+			newSteps.push(new HybridModelAnimation(o,m,o2,n));
+		}
 
 		realType.push(t);
 		realMsgs.push(m);
@@ -3219,15 +3769,14 @@ function applyKey (_event_){
  	var intAltKey = winObj.altKey;
  	var intCtrlKey = winObj.ctrlKey;
 
-  	if ( intKeyCode == 39){
+  if (intKeyCode == 39 || intKeyCode == 68){
 		animator.nextStep();
 		return false;
   	}
-	if (intKeyCode == 37 ){
+	if (intKeyCode == 37 || intKeyCode == 65){
 		animator.backStep();
 		return false;
 	}
-
 	if (intKeyCode == 32 ){
 		animator.speak();
 		return false;

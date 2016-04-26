@@ -33,26 +33,27 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		//echo $this->Html->css('cake.generic');
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-responsive');
-		
+
 		//sccriptAnimations
 		echo $this->fetch('cssAnimation');
 
 		//messageScript
 		echo $this->fetch('scriptMessage');
-		
+
 		//scripts
 		echo $this->Html->script('conf/jquery', array('inline' => false));
 		echo $this->Html->script('conf/modernizr-1.6.min', array('inline' => false));
 		echo $this->Html->script('conf/bootstrap.min', array('inline' => false));
 		echo $this->Html->script('app', array('inline' => false));
 		echo $this->fetch('script');
-		
+
 		//sccriptAnimations
 		echo $this->fetch('scriptAnimation');
-		
+
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 	?>
+	<meta http-equiv="Content-Language" content="pt-br, en">
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -71,14 +72,14 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	          <li><?=$this->Html->link(__('contact'), array('controller'=>'app', 'action'=>'contact')); ?></li>
 	        </ul>
 	        <div id="languages" class="pull-right">
-	        
+
 				<?echo $this->Html->image("flags/br-shine.png", array(
 			    							  "alt" => "Brazil",
-			    							  'url' => array('controller'=>'app', 'action'=>'changeLanguage', 'por'))); 
+			    							  'url' => array('controller'=>'app', 'action'=>'changeLanguage', 'por')));
 				 echo $this->Html->image("flags/us-shine.png", array(
 						"alt" => "USA",
 						'url' => array('controller'=>'app', 'action'=>'changeLanguage', 'eng')));
-				
+
 				?>
 		  </div>
 	      </div><!--/.nav-collapse -->

@@ -9,12 +9,4 @@ var msg = {
 		msg8: 'O <b>host B</b> aguardará por um tempo de transmissão de quadro e então retransmitirá o quadro com probabilidade <b>p</b>, ou aguardará por um outro tempo de quadro com probabilidade <b>1-p</b>.'
 };
 
-var audios = new Array ("../../audio/al/msg1.mp3",
-                        "../../audio/al/msg2.mp3",
-												"../../audio/al/msg3.mp3",
-												"../../audio/al/msg4.mp3",
-												"../../audio/al/msg5.mp3",
-												"../../audio/al/msg6.mp3",
-												"../../audio/al/msg7.mp3",
-												"../../audio/al/msg8.mp3",
-												"../../audio/al/msg9.mp3");
+var audios = new Array ("");

@@ -1,8 +1,8 @@
 <?php echo $this->fetch('content'); ?>
-<div id="controlPanel">
+<!--<div id="controlPanel">
 	<button id="pause" value="pause" onclick="pauseAnimation()">Pause</button>
 	<button id="grid" onclick="gridOff()">Grid</button>
-</div>
+</div>-->
 <div id="buttons">
 	<button id="voltar" alt="Voltar Animação"; onclick="animator.backStep();" class="buttonBack"></button>
 	<button id="continuar" alt="Avançar Animação"; onclick="animator.nextStep();" class="buttonNext"></button>
@@ -25,5 +25,5 @@
 
 <script language="javascript">
 	document.onkeydown = applyKey;
-	document.getElementById('aud').style.backgroundPosition = "0px -60px";
+	document.getElementById("aud").style.backgroundPosition = "0px 0px";
 </script>

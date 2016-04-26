@@ -55,3 +55,4 @@
 			<p><?=__('animationSequenceNumberText')?></p>
 		</div>
 	</div>
+</div>

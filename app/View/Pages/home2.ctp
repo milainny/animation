@@ -25,7 +25,7 @@
 <div class="row mbottom">
 	<div class="span4">
 		<div class="box">
-			<h4><?=$this->Html->link(__('animationHybridModelTitle'), array('controller'=>'pages', 'action'=>'hybridModel'));?></h4>
+			<h4><?=$this->Html->link(__('animationHybridModelTitle'), array('controller'=>'pages', 'action'=>'hybridModel2'));?></h4>
 			<p><?=__('animationHybridModelText')?></p>
 		</div>
 	</div>
